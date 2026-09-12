@@ -6,9 +6,18 @@ import { sendContactInquiry } from "../../services/api";
 import { MagneticButton } from "../common/MagneticButton";
 import { useCursor } from "../../context/CursorContext";
 
-export const ContactSection = ({ soundState }) => {
+export const ContactSection = ({ soundState, contactData = {}, email = "hello@shallycreates.com" }) => {
   const { playSynthSound } = soundState;
   const { setCursor } = useCursor();
+
+  const data = {
+    badgeText: contactData.badgeText || "START A COLLABORATION",
+    headlinePrefix: contactData.headlinePrefix || "Let's Build Something",
+    headlineHighlight: contactData.headlineHighlight || "Extraordinary.",
+    description: contactData.description || "Have an upcoming campaign, product launch, or monthly content retainer in mind? Fill in the details below or reach out directly.",
+    availabilityStatus: contactData.availabilityStatus || "Accepting Q1/Q2 Retainers",
+    emailDirect: email || "hello@shallycreates.com"
+  };
 
   const [formData, setFormData] = useState({
     name: "",
@@ -88,13 +97,13 @@ export const ContactSection = ({ soundState }) => {
         <div className="mb-16 text-center max-w-3xl mx-auto">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-[5px] bg-cute-pink/20 border border-cute-pink/40 text-cute-pink text-xs font-mono font-medium mb-3">
             <Mail className="w-3.5 h-3.5" />
-            <span>START A COLLABORATION</span>
+            <span>{data.badgeText}</span>
           </div>
           <h2 className="font-heading font-black text-3xl sm:text-5xl lg:text-6xl text-white-pure tracking-tight mb-4">
-            Let's Build Something <span className="text-gradient-purple-cyan">Extraordinary.</span>
+            {data.headlinePrefix} <span className="text-gradient-purple-cyan">{data.headlineHighlight}</span>
           </h2>
           <p className="text-white-dim text-sm sm:text-base font-normal">
-            Have an upcoming campaign, product launch, or monthly content retainer in mind? Fill in the details below or reach out directly.
+            {data.description}
           </p>
         </div>
 
@@ -116,12 +125,12 @@ export const ContactSection = ({ soundState }) => {
               </p>
               
               <a
-                href="mailto:hello@shallycreates.com"
+                href={`mailto:${data.emailDirect}`}
                 onMouseEnter={() => setCursor("hover")}
                 onMouseLeave={() => setCursor("default")}
                 className="group flex items-center justify-between p-3 rounded-[4px] bg-dark-950 border border-white/10 hover:border-purple-glow transition-all text-xs font-mono text-white-crisp"
               >
-                <span>hello@shallycreates.com</span>
+                <span>{data.emailDirect}</span>
                 <ArrowUpRight className="w-3.5 h-3.5 text-purple-glow group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               </a>
             </div>

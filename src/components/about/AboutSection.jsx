@@ -4,23 +4,37 @@ import { User, Sparkles, Heart, Coffee, Compass, CheckCircle2, ArrowUpRight } fr
 import { creativeTools } from "../../data/portfolioData";
 import { useCursor } from "../../context/CursorContext";
 
-export const AboutSection = ({ soundState }) => {
+export const AboutSection = ({ soundState, aboutData = {} }) => {
   const { playSynthSound } = soundState;
   const { setCursor } = useCursor();
 
+  const data = {
+    badgeText: aboutData.badgeText || "BEHIND THE CREATIVE VISION",
+    headlinePrefix: aboutData.headlinePrefix || "Meet",
+    headlineName: aboutData.headlineName || "Shally",
+    headlineSuffix: aboutData.headlineSuffix || "— Digital Creator & Strategist",
+    bioParagraph1: aboutData.bioParagraph1 || "I live at the intersection of visual psychology, high-retention video cutting, and hypnotic editorial copy.",
+    bioParagraph2: aboutData.bioParagraph2 || "Over the past 5+ years, I've helped boutique luxury brands, disruptive tech founders, and ambitious lifestyle creators break through algorithm fatigue. My philosophy is simple: attention isn't given; it is engineered with artistic taste and rhythm.",
+    portraitImage: aboutData.portraitImage || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1000&q=80",
+    statusBadge: aboutData.statusBadge || "Based in Digital Nomad Orbit",
+    timezone: aboutData.timezone || "EST / GMT",
+    hobbyTitle: aboutData.hobbyTitle || "Fueled By Iced Matcha",
+    hobbySub: aboutData.hobbySub || "& 90s Cyberpunk Soundtracks",
+    pillar1Title: aboutData.pillar1Title || "Rhythmic Storytelling",
+    pillar1Desc: aboutData.pillar1Desc || "Every edit, paragraph, and reel is scored like music with intentional cadence, tension, and release.",
+    pillar2Title: aboutData.pillar2Title || "Psychological Hooks",
+    pillar2Desc: aboutData.pillar2Desc || "Capturing attention in the first 3 seconds through visual curiosity, bold statements, and pattern interrupts.",
+    pillar3Title: aboutData.pillar3Title || "Dark-Luxe Aesthetics",
+    pillar3Desc: aboutData.pillar3Desc || "Elevated, editorial visuals that stand apart from generic templates and cheap commercial noise.",
+    stat1: aboutData.stat1 || "5+ Years Active Production",
+    stat2: aboutData.stat2 || "45+ Campaigns Shipped",
+    stat3: aboutData.stat3 || "100% On-Time Track Record"
+  };
+
   const creativePillars = [
-    {
-      title: "Rhythmic Storytelling",
-      desc: "Every edit, paragraph, and reel is scored like music with intentional cadence, tension, and release."
-    },
-    {
-      title: "Psychological Hooks",
-      desc: "Capturing attention in the first 3 seconds through visual curiosity, bold statements, and pattern interrupts."
-    },
-    {
-      title: "Dark-Luxe Aesthetics",
-      desc: "Elevated, editorial visuals that stand apart from generic templates and cheap commercial noise."
-    }
+    { title: data.pillar1Title, desc: data.pillar1Desc },
+    { title: data.pillar2Title, desc: data.pillar2Desc },
+    { title: data.pillar3Title, desc: data.pillar3Desc }
   ];
 
   return (
@@ -35,10 +49,10 @@ export const AboutSection = ({ soundState }) => {
         <div className="mb-16">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-[5px] bg-purple-deep/20 border border-purple-glow/30 text-purple-soft text-xs font-mono font-medium mb-3">
             <User className="w-3.5 h-3.5 text-purple-glow" />
-            <span>BEHIND THE CREATIVE VISION</span>
+            <span>{data.badgeText}</span>
           </div>
           <h2 className="font-heading font-extrabold text-3xl sm:text-5xl text-white-pure tracking-tight">
-            Meet <span className="text-gradient-cute">Shally</span> — Digital Creator & Strategist
+            {data.headlinePrefix} <span className="text-gradient-cute">{data.headlineName}</span> {data.headlineSuffix}
           </h2>
         </div>
 
@@ -57,8 +71,8 @@ export const AboutSection = ({ soundState }) => {
               {/* Portrait Frame */}
               <div className="relative aspect-[4/5] rounded-[4px] overflow-hidden bg-black">
                 <img
-                  src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1000&q=80"
-                  alt="Shally Creative"
+                  src={data.portraitImage}
+                  alt={data.headlineName}
                   className="w-full h-full object-cover grayscale contrast-125 hover:grayscale-0 transition-all duration-700"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-dark-950/90 via-transparent to-transparent" />
@@ -67,10 +81,10 @@ export const AboutSection = ({ soundState }) => {
                 <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between font-mono text-xs">
                   <div className="bg-dark-950/80 backdrop-blur-md px-3 py-1 rounded-[3px] border border-white/10 text-purple-mist flex items-center gap-1.5">
                     <Sparkles className="w-3.5 h-3.5 text-cute-pink" />
-                    <span>Based in Digital Nomad Orbit</span>
+                    <span>{data.statusBadge}</span>
                   </div>
                   <span className="bg-cyan-deep/80 text-cyan-ice px-2 py-0.5 rounded-[3px] font-bold">
-                    EST / GMT
+                    {data.timezone}
                   </span>
                 </div>
               </div>
@@ -87,8 +101,8 @@ export const AboutSection = ({ soundState }) => {
                 <Coffee className="w-4 h-4" />
               </div>
               <div>
-                <p className="font-heading text-xs font-bold text-white-pure">Fueled By Iced Matcha</p>
-                <p className="font-mono text-[9px] text-cute-pink">& 90s Cyberpunk Soundtracks</p>
+                <p className="font-heading text-xs font-bold text-white-pure">{data.hobbyTitle}</p>
+                <p className="font-mono text-[9px] text-cute-pink">{data.hobbySub}</p>
               </div>
             </motion.div>
           </div>
@@ -96,12 +110,8 @@ export const AboutSection = ({ soundState }) => {
           {/* Right: Narrative Story & Creative Pillars (7 Cols) */}
           <div className="lg:col-span-7 flex flex-col justify-between">
             <div className="space-y-4 text-white-dim text-base sm:text-lg leading-relaxed mb-8">
-              <p>
-                I live at the intersection of <strong className="text-white-crisp font-semibold">visual psychology</strong>, <strong className="text-purple-soft font-semibold">high-retention video cutting</strong>, and <strong className="text-cyan-neon font-semibold">hypnotic editorial copy</strong>.
-              </p>
-              <p>
-                Over the past 5+ years, I've helped boutique luxury brands, disruptive tech founders, and ambitious lifestyle creators break through algorithm fatigue. My philosophy is simple: <em className="text-cute-pink not-italic font-medium">attention isn't given; it is engineered with artistic taste and rhythm.</em>
-              </p>
+              <p>{data.bioParagraph1}</p>
+              <p>{data.bioParagraph2}</p>
             </div>
 
             {/* Creative Pillars (3 Box Grid) */}
@@ -121,15 +131,15 @@ export const AboutSection = ({ soundState }) => {
             <div className="flex flex-wrap items-center gap-4 pt-4 border-t border-white/10 text-xs text-white-muted font-medium">
               <span className="flex items-center gap-1.5 text-white-crisp">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                5+ Years Active Production
+                {data.stat1}
               </span>
               <span className="flex items-center gap-1.5 text-white-crisp">
                 <CheckCircle2 className="w-4 h-4 text-purple-glow" />
-                45+ Campaigns Shipped
+                {data.stat2}
               </span>
               <span className="flex items-center gap-1.5 text-white-crisp">
                 <CheckCircle2 className="w-4 h-4 text-cyan-neon" />
-                100% On-Time Track Record
+                {data.stat3}
               </span>
             </div>
           </div>

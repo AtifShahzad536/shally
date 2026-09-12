@@ -3,31 +3,43 @@ import { motion, AnimatePresence } from "framer-motion";
 import { PenTool, Copy, Check, Sparkles, BookOpen, Quote, ArrowRight, Gauge } from "lucide-react";
 import { useCursor } from "../../context/CursorContext";
 
-export const ContentWriting = ({ soundState }) => {
+export const ContentWriting = ({ soundState, contentData = {} }) => {
   const { playSynthSound } = soundState;
   const { setCursor } = useCursor();
 
   const [activeCategory, setActiveCategory] = useState("brand-manifesto");
   const [copied, setCopied] = useState(false);
 
+  const data = {
+    badgeText: contentData.badgeText || "EDITORIAL CONTENT LAB",
+    headlineQuote: contentData.headlineQuote || "“Words that make people stop scrolling & start caring.”",
+    description: contentData.description || "Whether it's poetic brand storytelling, high-retention video scripts, or conversion-driven website copy, every syllable is engineered to captivate attention and drive decisive action.",
+    manifestoTitle: contentData.manifestoTitle || "The modern luxury of intentional stillness.",
+    manifestoSub: contentData.manifestoSub || "Crafted for a high-end botanical fragrance house in Milan.",
+    manifestoBody: contentData.manifestoBody || `In an era of endless noise and hyper-stimulation, true luxury is the quiet confidence of knowing exactly who you are. We don't bottle scents to mask reality; we distill moments of profound clarity. When the world races at 120 frames per second, we create the permission to breathe, linger, and remember.`,
+    hooksTitle: contentData.hooksTitle || "3 uncomfortable truths about building in public in 2026.",
+    hooksSub: contentData.hooksSub || "Designed for a tech founder's LinkedIn & Twitter personal brand.",
+    hooksBody: contentData.hooksBody || `Most creators obsess over vanity views while their bank accounts starve. Here is the framework we used to turn 1,200 engaged followers into a $42,000 monthly consulting engine: 1. Kill the corporate fluff. 2. Post the messy WIP, not just the polished highlight reel. 3. Treat your comment section like a VIP cocktail party.`
+  };
+
   const writingSnippets = {
     "brand-manifesto": {
       category: "Brand Manifesto & Narrative",
-      headline: "The modern luxury of intentional stillness.",
-      subtext: "Crafted for a high-end botanical fragrance house in Milan.",
+      headline: data.manifestoTitle,
+      subtext: data.manifestoSub,
       hookScore: "98% Emotional Resonance",
       readingTime: "45 sec read",
       wordsCount: 142,
-      body: `In an era of endless noise and hyper-stimulation, true luxury is the quiet confidence of knowing exactly who you are. We don't bottle scents to mask reality; we distill moments of profound clarity. When the world races at 120 frames per second, we create the permission to breathe, linger, and remember.`
+      body: data.manifestoBody
     },
     "viral-hooks": {
       category: "High-Retention Social Captions",
-      headline: "3 uncomfortable truths about building in public in 2026.",
-      subtext: "Designed for a tech founder's LinkedIn & Twitter personal brand.",
+      headline: data.hooksTitle,
+      subtext: data.hooksSub,
       hookScore: "96% Scroll-Stop Rate",
       readingTime: "30 sec read",
       wordsCount: 98,
-      body: `Most creators obsess over vanity views while their bank accounts starve. Here is the framework we used to turn 1,200 engaged followers into a $42,000 monthly consulting engine: 1. Kill the corporate fluff. 2. Post the messy WIP, not just the polished highlight reel. 3. Treat your comment section like a VIP cocktail party.`
+      body: data.hooksBody
     },
     "website-copy": {
       category: "High-Converting SaaS Landing Page",
@@ -69,14 +81,14 @@ export const ContentWriting = ({ soundState }) => {
         <div className="mb-16">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-[5px] bg-cute-pink/15 border border-cute-pink/30 text-cute-pink text-xs font-mono font-medium mb-4">
             <PenTool className="w-3.5 h-3.5" />
-            <span>EDITORIAL CONTENT LAB</span>
+            <span>{data.badgeText}</span>
           </div>
 
           <h2 className="font-heading font-black text-3xl sm:text-5xl lg:text-6xl text-white-pure tracking-tight max-w-4xl leading-[1.1] mb-4">
-            “Words that make people <span className="text-gradient-cute">stop scrolling</span> & start caring.”
+            {data.headlineQuote}
           </h2>
           <p className="text-white-dim text-sm sm:text-base max-w-2xl font-normal">
-            Whether it's poetic brand storytelling, high-retention video scripts, or conversion-driven website copy, every syllable is engineered to captivate attention and drive decisive action.
+            {data.description}
           </p>
         </div>
 

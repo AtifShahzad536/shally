@@ -7,13 +7,32 @@ import {
 import { FaInstagram } from "react-icons/fa6";
 import { useCursor } from "../../context/CursorContext";
 
-export const SocialEcosystem = ({ soundState }) => {
+export const SocialEcosystem = ({ soundState, socialData = {} }) => {
   const { playSynthSound } = soundState;
   const { setCursor } = useCursor();
   
   const [activeTab, setActiveTab] = useState("reels");
   const [likes, setLikes] = useState({ 1: 42300, 2: 89100, 3: 124500 });
   const [likedPosts, setLikedPosts] = useState({});
+
+  const data = {
+    badgeText: socialData.badgeText || "SOCIAL MEDIA ECOSYSTEM",
+    headlinePrefix: socialData.headlinePrefix || "Strategy + Aesthetics +",
+    headlineHighlight: socialData.headlineHighlight || "Viral Growth",
+    description: socialData.description || "We don't post random content. Every piece is engineered with psychological 3-second hooks, aesthetic curation, and strategic CTA funnels that build loyal brand cults.",
+    reel1Tag: socialData.reel1Tag || "#OrganicSkincare",
+    reel1Views: socialData.reel1Views || "1.4M",
+    reel1Caption: socialData.reel1Caption || "POV: You finally found the 3-step routine that fixes dull barrier damage in 7 days ✨🧴",
+    reel1Image: socialData.reel1Image || "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=600&q=80",
+    reel2Tag: socialData.reel2Tag || "#FashionAesthetics",
+    reel2Views: socialData.reel2Views || "2.8M",
+    reel2Caption: socialData.reel2Caption || "How to style vintage leather jackets for aesthetic night outs in NYC 🖤⚡",
+    reel2Image: socialData.reel2Image || "https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=600&q=80",
+    reel3Tag: socialData.reel3Tag || "#MatchaRituals",
+    reel3Views: socialData.reel3Views || "3.2M",
+    reel3Caption: socialData.reel3Caption || "The sound of ceremonial matcha on a rainy Sunday morning in Tokyo 🍵🌧️",
+    reel3Image: socialData.reel3Image || "https://images.unsplash.com/photo-1536256263959-770b48d82b0a?auto=format&fit=crop&w=600&q=80"
+  };
 
   const togglePostLike = (id) => {
     setLikedPosts(prev => {
@@ -27,29 +46,29 @@ export const SocialEcosystem = ({ soundState }) => {
   const socialReels = [
     {
       id: 1,
-      tag: "#OrganicSkincare",
-      views: "1.4M",
+      tag: data.reel1Tag,
+      views: data.reel1Views,
       comments: "1,240",
-      caption: "POV: You finally found the 3-step routine that fixes dull barrier damage in 7 days ✨🧴",
-      image: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=600&q=80",
+      caption: data.reel1Caption,
+      image: data.reel1Image,
       hookScore: "98% High Retention"
     },
     {
       id: 2,
-      tag: "#FashionAesthetics",
-      views: "2.8M",
+      tag: data.reel2Tag,
+      views: data.reel2Views,
       comments: "3,480",
-      caption: "How to style vintage leather jackets for aesthetic night outs in NYC 🖤⚡",
-      image: "https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=600&q=80",
+      caption: data.reel2Caption,
+      image: data.reel2Image,
       hookScore: "96% Viral Trajectory"
     },
     {
       id: 3,
-      tag: "#MatchaRituals",
-      views: "3.2M",
+      tag: data.reel3Tag,
+      views: data.reel3Views,
       comments: "4,120",
-      caption: "The sound of ceremonial matcha on a rainy Sunday morning in Tokyo 🍵🌧️",
-      image: "https://images.unsplash.com/photo-1536256263959-770b48d82b0a?auto=format&fit=crop&w=600&q=80",
+      caption: data.reel3Caption,
+      image: data.reel3Image,
       hookScore: "99% Sound Save Rate"
     }
   ];
@@ -75,14 +94,14 @@ export const SocialEcosystem = ({ soundState }) => {
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-[5px] bg-purple-deep/20 border border-purple-glow/30 text-purple-soft text-xs font-mono font-medium mb-3">
               <FaInstagram className="w-3.5 h-3.5 text-purple-glow" />
-              <span>SOCIAL MEDIA ECOSYSTEM</span>
+              <span>{data.badgeText}</span>
             </div>
             <h2 className="font-heading font-extrabold text-3xl sm:text-5xl text-white-pure tracking-tight">
-              Strategy + Aesthetics + <span className="text-gradient-cute">Viral Growth</span>
+              {data.headlinePrefix} <span className="text-gradient-cute">{data.headlineHighlight}</span>
             </h2>
           </div>
           <p className="text-white-dim text-sm max-w-md mt-4 md:mt-0 font-normal">
-            We don't post random content. Every piece is engineered with psychological 3-second hooks, aesthetic curation, and strategic CTA funnels that build loyal brand cults.
+            {data.description}
           </p>
         </div>
 

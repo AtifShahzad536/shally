@@ -16,12 +16,12 @@ export const HomePage = ({ projects, services, testimonials, soundState, setting
       <Hero soundState={soundState} heroData={settings?.hero} />
       <Services services={services} soundState={soundState} />
       <VideoWorkspace soundState={soundState} videoData={settings?.videoWorkspace} />
-      <SocialEcosystem soundState={soundState} />
-      <ContentWriting soundState={soundState} />
+      <SocialEcosystem soundState={soundState} socialData={settings?.socialEcosystem} />
+      <ContentWriting soundState={soundState} contentData={settings?.contentWriting} />
       <PortfolioSection projects={projects} soundState={soundState} />
-      <AboutSection soundState={soundState} />
+      <AboutSection soundState={soundState} aboutData={settings?.about} />
       <TestimonialsSection testimonials={testimonials} soundState={soundState} />
-      <ContactSection soundState={soundState} />
+      <ContactSection soundState={soundState} contactData={settings?.contact} email={settings?.email} />
       <Footer soundState={soundState} />
     </>
   );
