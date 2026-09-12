@@ -1,6 +1,8 @@
 import { fallbackProjects, fallbackServices, fallbackTestimonials } from "../data/portfolioData";
 
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5001/api";
+const rawApi = import.meta.env.VITE_API_URL || "http://localhost:5001/api";
+const cleanBase = rawApi.trim().replace(/\/+$/, "");
+const API_BASE = cleanBase.endsWith("/api") ? cleanBase : `${cleanBase}/api`;
 
 // Public & Admin Project APIs
 export const fetchProjects = async (category = "All") => {
