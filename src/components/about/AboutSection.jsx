@@ -15,7 +15,7 @@ export const AboutSection = ({ soundState, aboutData = {} }) => {
     headlineSuffix: aboutData.headlineSuffix || "— Digital Creator & Strategist",
     bioParagraph1: aboutData.bioParagraph1 || "I live at the intersection of visual psychology, high-retention video cutting, and hypnotic editorial copy.",
     bioParagraph2: aboutData.bioParagraph2 || "Over the past 5+ years, I've helped boutique luxury brands, disruptive tech founders, and ambitious lifestyle creators break through algorithm fatigue. My philosophy is simple: attention isn't given; it is engineered with artistic taste and rhythm.",
-    portraitImage: aboutData.portraitImage || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1000&q=80",
+    portraitImage: aboutData.portraitImage || "/shally.png",
     statusBadge: aboutData.statusBadge || "Based in Digital Nomad Orbit",
     timezone: aboutData.timezone || "EST / GMT",
     hobbyTitle: aboutData.hobbyTitle || "Fueled By Iced Matcha",

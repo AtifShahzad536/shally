@@ -32,7 +32,14 @@ function AppContent() {
   const [projects, setProjects] = useState(fallbackProjects);
   const [services, setServices] = useState(fallbackServices);
   const [testimonials, setTestimonials] = useState(fallbackTestimonials);
-  const [settings, setSettings] = useState(null);
+  const [settings, setSettings] = useState(() => {
+    try {
+      const saved = localStorage.getItem("shally_site_settings");
+      return saved ? JSON.parse(saved) : null;
+    } catch (e) {
+      return null;
+    }
+  });
   const [activeSection, setActiveSection] = useState("hero");
 
   const isAdminRoute = location.pathname.startsWith("/admin");
@@ -78,6 +85,9 @@ function AppContent() {
         if (testData && testData.length > 0) setTestimonials(testData);
         if (settingsRes && settingsRes.success && settingsRes.data) {
           setSettings(settingsRes.data);
+          try {
+            localStorage.setItem("shally_site_settings", JSON.stringify(settingsRes.data));
+          } catch (e) {}
         }
       } catch (err) {
         console.warn("Using fallback local data");

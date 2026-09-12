@@ -32,7 +32,7 @@ export const SiteSettingsManager = () => {
       chip1: "Social Media Growth",
       chip2: "Editorial Copywriting",
       chip3: "Short-Form Video Production",
-      previewImage: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80",
+      previewImage: "/shally.png",
       motto: "Design for emotion. Edit for rhythm. Write for conversion.",
       stat1Val: "18M+",
       stat1Label: "Organic Video Views",
@@ -51,7 +51,7 @@ export const SiteSettingsManager = () => {
       headlineHighlight: "Hypnotic Edits",
       headlineSuffix: "Frame by Frame",
       description: "Short-form video editing isn't just cutting clips—it's psychological pacing, rhythmic sound design, speed ramps, and retention engineering.",
-      videoPreviewUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1200&q=80",
+      videoPreviewUrl: "/shally.png",
       subtitleHookText: "“STOP LOSING 70% OF SCROLLERS IN THE FIRST 3 SECONDS.”",
       trackV2Label: "[3s HOOK TITLE]",
       trackV1Label: "HOOK_CLIP_A.mp4",
@@ -67,7 +67,7 @@ export const SiteSettingsManager = () => {
       headlineSuffix: "— Digital Creator & Strategist",
       bioParagraph1: "I live at the intersection of visual psychology, high-retention video cutting, and hypnotic editorial copy.",
       bioParagraph2: "Over the past 5+ years, I've helped boutique luxury brands, disruptive tech founders, and ambitious lifestyle creators break through algorithm fatigue. My philosophy is simple: attention isn't given; it is engineered with artistic taste and rhythm.",
-      portraitImage: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1000&q=80",
+      portraitImage: "/shally.png",
       statusBadge: "Based in Digital Nomad Orbit",
       timezone: "EST / GMT",
       hobbyTitle: "Fueled By Iced Matcha",
@@ -147,6 +147,15 @@ export const SiteSettingsManager = () => {
     const loadSettings = async () => {
       setLoading(true);
       try {
+        // Fast instant render from cache if available
+        try {
+          const cached = localStorage.getItem("shally_site_settings");
+          if (cached) {
+            const parsed = JSON.parse(cached);
+            setFormData(prev => ({ ...prev, ...parsed }));
+          }
+        } catch (e) {}
+
         const res = await fetchSettingsApi();
         if (res.success && res.data) {
           setFormData(prev => ({
@@ -161,6 +170,9 @@ export const SiteSettingsManager = () => {
             socialLinks: { ...prev.socialLinks, ...(res.data.socialLinks || {}) },
             seo: { ...prev.seo, ...(res.data.seo || {}) }
           }));
+          try {
+            localStorage.setItem("shally_site_settings", JSON.stringify(res.data));
+          } catch (e) {}
         }
       } catch (err) {
         toast.error("Failed to load settings.");
@@ -182,20 +194,31 @@ export const SiteSettingsManager = () => {
       if (res.success && res.data?.url) {
         const url = res.data.url;
         
+        let updated = { ...formData };
         if (pathKey === "hero.previewImage") {
-          setFormData(prev => ({ ...prev, hero: { ...prev.hero, previewImage: url } }));
+          updated = { ...updated, hero: { ...updated.hero, previewImage: url } };
         } else if (pathKey === "videoWorkspace.videoPreviewUrl") {
-          setFormData(prev => ({ ...prev, videoWorkspace: { ...prev.videoWorkspace, videoPreviewUrl: url } }));
+          updated = { ...updated, videoWorkspace: { ...updated.videoWorkspace, videoPreviewUrl: url } };
         } else if (pathKey === "about.portraitImage") {
-          setFormData(prev => ({ ...prev, about: { ...prev.about, portraitImage: url } }));
+          updated = { ...updated, about: { ...updated.about, portraitImage: url } };
         } else if (pathKey === "socialEcosystem.reel1Image") {
-          setFormData(prev => ({ ...prev, socialEcosystem: { ...prev.socialEcosystem, reel1Image: url } }));
+          updated = { ...updated, socialEcosystem: { ...updated.socialEcosystem, reel1Image: url } };
         } else if (pathKey === "socialEcosystem.reel2Image") {
-          setFormData(prev => ({ ...prev, socialEcosystem: { ...prev.socialEcosystem, reel2Image: url } }));
+          updated = { ...updated, socialEcosystem: { ...updated.socialEcosystem, reel2Image: url } };
         } else if (pathKey === "socialEcosystem.reel3Image") {
-          setFormData(prev => ({ ...prev, socialEcosystem: { ...prev.socialEcosystem, reel3Image: url } }));
+          updated = { ...updated, socialEcosystem: { ...updated.socialEcosystem, reel3Image: url } };
         }
-        toast.success(`WebP Uploaded (${(res.data.bytes / 1024).toFixed(1)} KB)`, { id: toastId });
+        
+        setFormData(updated);
+
+        // Auto-save immediately so reload / navigation never loses the image
+        try {
+          localStorage.setItem("shally_site_settings", JSON.stringify(updated));
+          await updateSettingsApi(updated);
+          toast.success(`Image uploaded & auto-saved to database! ✨`, { id: toastId });
+        } catch (saveErr) {
+          toast.success(`WebP Uploaded (${(res.data.bytes / 1024).toFixed(1)} KB) - click Save to sync`, { id: toastId });
+        }
       } else {
         toast.error(res.message || "Upload failed", { id: toastId });
       }
@@ -211,6 +234,7 @@ export const SiteSettingsManager = () => {
     setSaving(true);
     const toastId = toast.loading("Saving configuration...");
     try {
+      localStorage.setItem("shally_site_settings", JSON.stringify(formData));
       const res = await updateSettingsApi(formData);
       if (res.success) {
         toast.success("All section changes saved & live on site! ✨", { id: toastId });
