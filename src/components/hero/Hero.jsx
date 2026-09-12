@@ -1,15 +1,13 @@
-import React, { useState, useEffect, useRef } from "react";
+import React from "react";
 import { motion } from "framer-motion";
-import { Sparkles, ArrowRight, Play, Heart, TrendingUp, Film, PenTool, CheckCircle2 } from "lucide-react";
+import { Sparkles, ArrowRight, Film, PenTool, CheckCircle2 } from "lucide-react";
+import { FaInstagram } from "react-icons/fa6";
 import { MagneticButton } from "../common/MagneticButton";
 import { useCursor } from "../../context/CursorContext";
 
 export const Hero = ({ soundState, heroData = {} }) => {
   const { playSynthSound } = soundState;
   const { setCursor } = useCursor();
-  const [likesCount, setLikesCount] = useState(84200);
-  const [isLiked, setIsLiked] = useState(false);
-  const timecodeRef = useRef(null);
 
   // Dynamic CMS Fallback
   const data = {
@@ -23,8 +21,7 @@ export const Hero = ({ soundState, heroData = {} }) => {
     chip1: heroData.chip1 || "Social Media Growth",
     chip2: heroData.chip2 || "Editorial Copywriting",
     chip3: heroData.chip3 || "Short-Form Video Production",
-    previewImage: heroData.previewImage || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80",
-    motto: heroData.motto || "Design for emotion. Edit for rhythm. Write for conversion.",
+    previewImage: heroData.previewImage || "/shally.png",
     stat1Val: heroData.stat1Val || "18M+",
     stat1Label: heroData.stat1Label || "Organic Video Views",
     stat2Val: heroData.stat2Val || "+340%",
@@ -33,26 +30,6 @@ export const Hero = ({ soundState, heroData = {} }) => {
     stat3Label: heroData.stat3Label || "Email Open Rate Record",
     stat4Val: heroData.stat4Val || "99.8%",
     stat4Label: heroData.stat4Label || "Client Satisfaction"
-  };
-
-  useEffect(() => {
-    let frame = 18;
-    let sec = 24;
-    const interval = setInterval(() => {
-      frame = (frame + 1) % 60;
-      if (frame === 0) sec = (sec + 1) % 60;
-      const formatted = `00:01:${sec.toString().padStart(2, "0")}:${frame.toString().padStart(2, "0")}`;
-      if (timecodeRef.current) {
-        timecodeRef.current.textContent = formatted;
-      }
-    }, 200);
-    return () => clearInterval(interval);
-  }, []);
-
-  const handleLike = () => {
-    setIsLiked(!isLiked);
-    setLikesCount(prev => isLiked ? prev - 1 : prev + 1);
-    playSynthSound("click");
   };
 
   return (
@@ -155,132 +132,87 @@ export const Hero = ({ soundState, heroData = {} }) => {
           </div>
 
           {/* Right Floating Visual Composition (5 Cols) */}
-          <div className="lg:col-span-5 relative mt-10 lg:mt-0">
+          <div className="lg:col-span-5 relative mt-12 lg:mt-0 flex items-center justify-center">
             
-            {/* Main Creative Card 1: Video Editing Preview Mini-Monitor */}
+            {/* Surrounding Ambient Radial Light Rays & Aura Halo */}
+            <div className="absolute w-[340px] sm:w-[440px] h-[340px] sm:h-[440px] rounded-full -z-10 flex items-center justify-center pointer-events-none">
+              {/* Rotating Conic Light Rays */}
+              <div 
+                className="absolute inset-0 rounded-full opacity-65 animate-spin-slow"
+                style={{
+                  background: "conic-gradient(from 0deg at 50% 50%, rgba(168, 85, 247, 0.45) 0deg, rgba(0, 229, 255, 0.45) 60deg, transparent 120deg, rgba(244, 114, 182, 0.45) 180deg, rgba(0, 229, 255, 0.45) 240deg, transparent 300deg, rgba(168, 85, 247, 0.45) 360deg)",
+                  filter: "blur(45px)"
+                }}
+              />
+              
+              {/* Pulsing Core Aura Glow */}
+              <div className="absolute w-72 h-72 rounded-full bg-gradient-to-tr from-purple-glow/40 via-cyan-neon/30 to-cute-pink/40 blur-3xl animate-pulse" />
+              
+              {/* Subtle Radial Light Ring */}
+              <div className="absolute inset-2 rounded-full border border-purple-glow/30 opacity-40 shadow-[0_0_50px_rgba(168,85,247,0.3)]" />
+            </div>
+
+            {/* Clean, High-End Portrait Image */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
+              initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              onMouseEnter={() => {
-                setCursor("play", "PREVIEW");
-                playSynthSound("hover");
-              }}
-              onMouseLeave={() => setCursor("default")}
-              className="glass-panel p-3 shadow-2xl relative z-20 border border-purple-glow/30 group"
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="relative z-10 w-full max-w-[360px] sm:max-w-[400px] aspect-square flex items-center justify-center"
             >
-              {/* Window Header */}
-              <div className="flex items-center justify-between pb-2 mb-2 border-b border-white/10 text-[11px] font-mono text-white-muted">
-                <div className="flex items-center gap-1.5">
-                  <div className="w-2.5 h-2.5 rounded-full bg-rose-500/80" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-amber-500/80" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
-                  <span className="ml-2 text-white-crisp font-semibold">PREMIERE_CUT_V4.mp4</span>
-                </div>
-                <span ref={timecodeRef} className="text-cyan-neon font-bold tracking-wider">00:01:24:18</span>
-              </div>
-
-              {/* Video Thumbnail Frame */}
-              <div className="relative aspect-[16/10] overflow-hidden rounded-[4px] bg-dark-900">
+              <div className="relative w-full h-full rounded-2xl p-2 flex items-center justify-center">
                 <img
-                  src={data.previewImage}
-                  alt="Creative Video Production"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 brightness-90 contrast-110"
+                  src={data.previewImage || "/shally.png"}
+                  alt="Shally — Creative Professional"
+                  className="w-full h-full object-contain filter drop-shadow-[0_20px_40px_rgba(0,0,0,0.8)] drop-shadow-[0_0_35px_rgba(168,85,247,0.35)] transition-transform duration-500 hover:scale-[1.03]"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-dark-950/90 via-transparent to-transparent" />
-                
-                {/* Play Button Overlay */}
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                  <div className="w-12 h-12 rounded-[5px] bg-purple-glow/80 text-white-pure flex items-center justify-center shadow-glow-purple group-hover:scale-110 transition-transform">
-                    <Play className="w-5 h-5 ml-0.5 fill-current" />
-                  </div>
-                </div>
-
-                {/* Subtitle / Hook Tag */}
-                <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between">
-                  <div className="bg-dark-950/80 backdrop-blur-md px-2.5 py-1 rounded-[4px] border border-white/10 text-[10px] font-mono text-purple-mist">
-                    ⚡ 3-SEC HOOK RETENTION: 94%
-                  </div>
-                  <span className="px-2 py-0.5 rounded-[4px] bg-cyan-deep/80 text-cyan-ice text-[9px] font-mono uppercase font-bold tracking-wider">
-                    4K ProRes
-                  </span>
-                </div>
               </div>
 
-              {/* Mini Audio Track Level */}
-              <div className="mt-2.5 flex items-center gap-1.5 h-2 bg-dark-900/90 rounded-[3px] p-0.5 overflow-hidden">
-                <div className="h-full bg-gradient-to-r from-cyan-neon via-purple-glow to-cute-pink rounded-[2px] w-[78%]" />
-                <div className="h-full bg-white/10 rounded-[2px] w-[22%]" />
-              </div>
-            </motion.div>
-
-            {/* Floating Card 2: Viral Instagram Metrics Card */}
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className="absolute -bottom-10 -left-6 sm:-left-10 z-30 glass-panel p-3.5 w-60 border border-cyan-neon/40 shadow-glow-cyan/20 bg-dark-900/95"
-            >
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center gap-2">
-                  <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-purple-glow to-cute-pink p-[1px] flex items-center justify-center">
-                    <img
-                      src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80"
-                      alt="Shally Avatar"
-                      className="w-full h-full rounded-full object-cover"
-                    />
-                  </div>
-                  <div>
-                    <p className="font-heading text-xs font-bold text-white-pure">@shally.creates</p>
-                    <p className="font-mono text-[9px] text-cute-pink">Viral Reel Series</p>
-                  </div>
+              {/* Floating Service Icon 1: Social Media Marketing (Top Left) */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: [0, -10, 0] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.1 }}
+                className="absolute -top-3 -left-2 sm:-left-6 z-20 glass-panel p-2.5 sm:p-3 rounded-[5px] border border-cute-pink/40 bg-dark-900/90 shadow-glow-pink/30 flex items-center gap-2 backdrop-blur-md"
+              >
+                <div className="w-8 h-8 rounded-[4px] bg-cute-pink/20 border border-cute-pink/40 flex items-center justify-center text-cute-pink shadow-inner">
+                  <FaInstagram className="w-4 h-4" />
                 </div>
-                <button
-                  onClick={handleLike}
-                  className="p-1 rounded-[3px] bg-white/5 hover:bg-cute-pink/20 transition-colors"
-                >
-                  <Heart className={`w-4 h-4 ${isLiked ? "fill-cute-pink text-cute-pink" : "text-white-muted"}`} />
-                </button>
-              </div>
-
-              <div className="grid grid-cols-2 gap-2 pt-1 border-t border-white/10 text-center">
-                <div className="bg-dark-900/60 p-1.5 rounded-[4px]">
-                  <p className="font-mono text-[9px] text-white-muted">Organic Reach</p>
-                  <p className="font-heading text-xs font-bold text-cyan-neon flex items-center justify-center gap-0.5">
-                    <TrendingUp className="w-3 h-3" />
-                    4.2M+
-                  </p>
-                </div>
-                <div className="bg-dark-900/60 p-1.5 rounded-[4px]">
-                  <p className="font-mono text-[9px] text-white-muted">Engagement</p>
-                  <p className="font-heading text-xs font-bold text-purple-soft">
-                    {likesCount.toLocaleString()}
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Floating Card 3: Cute Editorial Memo Card */}
-            <motion.div
-              initial={{ opacity: 0, x: -20, y: -15 }}
-              animate={{ opacity: 1, x: 0, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.35 }}
-              className="absolute -top-6 -right-4 sm:-right-8 z-30 glass-panel p-3 w-52 border border-cute-pink/40 shadow-glow-pink/15 rotate-2 bg-dark-900/95"
-            >
-              <div className="flex items-center gap-1.5 mb-1.5">
-                <span className="w-2 h-2 rounded-full bg-cute-pink" />
-                <span className="text-[11px] uppercase font-bold text-cute-pink tracking-wider">
-                  Creative Motto
+                <span className="text-xs font-heading font-bold text-white-pure pr-1">
+                  Social Growth
                 </span>
-              </div>
-              <p className="font-heading text-[12px] leading-snug text-white-crisp italic font-medium">
-                “{data.motto}”
-              </p>
-              <div className="mt-2 flex items-center justify-between text-[10px] text-purple-mist font-medium">
-                <span>✦ SHALLY STUDIO</span>
-                <span className="text-cyan-neon">100% Retentive</span>
-              </div>
+              </motion.div>
+
+              {/* Floating Service Icon 2: Video Editing (Top Right) */}
+              <motion.div
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: [0, 10, 0] }}
+                transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: 0.3 }}
+                className="absolute -top-4 -right-2 sm:-right-6 z-20 glass-panel p-2.5 sm:p-3 rounded-[5px] border border-cyan-neon/40 bg-dark-900/90 shadow-glow-cyan/30 flex items-center gap-2 backdrop-blur-md"
+              >
+                <div className="w-8 h-8 rounded-[4px] bg-cyan-deep/30 border border-cyan-neon/40 flex items-center justify-center text-cyan-neon shadow-inner">
+                  <Film className="w-4 h-4" />
+                </div>
+                <span className="text-xs font-heading font-bold text-white-pure pr-1">
+                  Video Editing
+                </span>
+              </motion.div>
+
+              {/* Floating Service Icon 3: Content Writing (Bottom Left / Bottom) */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: [0, -8, 0] }}
+                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+                className="absolute -bottom-4 left-4 sm:left-0 z-20 glass-panel p-2.5 sm:p-3 rounded-[5px] border border-purple-glow/40 bg-dark-900/90 shadow-glow-purple/30 flex items-center gap-2 backdrop-blur-md"
+              >
+                <div className="w-8 h-8 rounded-[4px] bg-purple-deep/30 border border-purple-glow/40 flex items-center justify-center text-purple-soft shadow-inner">
+                  <PenTool className="w-4 h-4" />
+                </div>
+                <span className="text-xs font-heading font-bold text-white-pure pr-1">
+                  Editorial Copy
+                </span>
+              </motion.div>
             </motion.div>
+
           </div>
         </div>
 
