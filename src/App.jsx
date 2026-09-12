@@ -6,6 +6,7 @@ import { Toaster } from "react-hot-toast";
 import { CursorProvider } from "./context/CursorContext";
 import { CustomCursor } from "./components/common/CustomCursor";
 import { NoiseTexture } from "./components/common/NoiseTexture";
+import { FloatingSocialDock } from "./components/common/FloatingSocialDock";
 import { Navbar } from "./components/navigation/Navbar";
 import { HomePage } from "./pages/HomePage";
 import { ProjectDetailPage } from "./pages/ProjectDetailPage";
@@ -122,9 +123,12 @@ function AppContent() {
       {/* Ambient Noise Background */}
       <NoiseTexture />
 
-      {/* Public Navbar (Hidden on Admin Routes) */}
+      {/* Public Navbar & Floating Social Bar (Hidden on Admin Routes) */}
       {!isAdminRoute && (
-        <Navbar soundState={soundState} activeSection={activeSection} />
+        <>
+          <Navbar soundState={soundState} activeSection={activeSection} />
+          <FloatingSocialDock socialLinks={settings?.socialLinks} soundState={soundState} />
+        </>
       )}
 
       {/* Routes Routing Engine */}

@@ -57,6 +57,8 @@ export const SiteSettingsManager = () => {
     },
 
     socialLinks: {
+      whatsapp: "https://wa.me/15552345678",
+      facebook: "https://facebook.com/shally.creates",
       instagram: "https://instagram.com/shally.creates",
       tiktok: "https://tiktok.com/@shallytok",
       linkedin: "https://linkedin.com/in/shally-creative",
@@ -759,6 +761,34 @@ export const SiteSettingsManager = () => {
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="text-white-muted uppercase block mb-1">WhatsApp Chat Link (e.g. https://wa.me/...)</label>
+                  <input
+                    type="url"
+                    value={formData.socialLinks?.whatsapp || ""}
+                    onChange={(e) => setFormData({
+                      ...formData,
+                      socialLinks: { ...formData.socialLinks, whatsapp: e.target.value }
+                    })}
+                    placeholder="https://wa.me/15552345678"
+                    className="w-full px-3 py-2 rounded bg-dark-950 border border-emerald-500/40 text-emerald-300 text-xs placeholder:text-white-dim/40"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-white-muted uppercase block mb-1">Facebook Page / Profile URL</label>
+                  <input
+                    type="url"
+                    value={formData.socialLinks?.facebook || ""}
+                    onChange={(e) => setFormData({
+                      ...formData,
+                      socialLinks: { ...formData.socialLinks, facebook: e.target.value }
+                    })}
+                    placeholder="https://facebook.com/shally.creates"
+                    className="w-full px-3 py-2 rounded bg-dark-950 border border-blue-500/40 text-blue-300 text-xs placeholder:text-white-dim/40"
+                  />
+                </div>
+
                 <div>
                   <label className="text-white-muted uppercase block mb-1">Instagram URL</label>
                   <input
