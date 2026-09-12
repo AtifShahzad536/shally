@@ -10,12 +10,13 @@ export const CustomCursor = () => {
   const mouseX = useMotionValue(-100);
   const mouseY = useMotionValue(-100);
 
-  const springConfig = { damping: 28, stiffness: 350, mass: 0.5 };
+  // Snappy, silky-smooth spring physics
+  const springConfig = { damping: 30, stiffness: 450, mass: 0.3 };
   const smoothX = useSpring(mouseX, springConfig);
   const smoothY = useSpring(mouseY, springConfig);
 
   useEffect(() => {
-    // Detect touch device
+    // Detect touch devices
     if (window.matchMedia("(pointer: coarse)").matches || "ontouchstart" in window) {
       setIsTouch(true);
       return;
@@ -43,12 +44,12 @@ export const CustomCursor = () => {
 
   if (isTouch || !isVisible) return null;
 
-  const isExpanded = cursorType !== "default";
+  const isHovered = cursorType !== "default";
   const hasText = !!cursorText;
 
   return (
     <div className="pointer-events-none fixed inset-0 z-[9999] overflow-hidden">
-      {/* Outer Ring / Tag */}
+      {/* Outer Sleek Ring */}
       <motion.div
         style={{
           x: smoothX,
@@ -57,35 +58,36 @@ export const CustomCursor = () => {
           translateY: "-50%",
         }}
         animate={{
-          scale: isExpanded ? 1.4 : 1,
-          width: hasText ? 120 : isExpanded ? 50 : 28,
-          height: hasText ? 36 : isExpanded ? 50 : 28,
+          scale: isHovered ? 1.15 : 1,
+          width: hasText ? 68 : isHovered ? 32 : 20,
+          height: hasText ? 22 : isHovered ? 32 : 20,
+          borderRadius: hasText ? "12px" : "50%",
           backgroundColor: hasText
-            ? "rgba(168, 85, 247, 0.9)"
+            ? "rgba(168, 85, 247, 0.85)"
             : cursorType === "play"
-            ? "rgba(0, 229, 255, 0.85)"
-            : isExpanded
-            ? "rgba(168, 85, 247, 0.2)"
-            : "rgba(255, 255, 255, 0.05)",
+            ? "rgba(0, 229, 255, 0.25)"
+            : isHovered
+            ? "rgba(168, 85, 247, 0.15)"
+            : "rgba(255, 255, 255, 0.04)",
           borderColor: hasText
-            ? "rgba(255, 255, 255, 0.6)"
+            ? "rgba(255, 255, 255, 0.4)"
             : cursorType === "play"
             ? "#00E5FF"
-            : isExpanded
-            ? "#A855F7"
-            : "rgba(255, 255, 255, 0.3)",
+            : isHovered
+            ? "rgba(168, 85, 247, 0.6)"
+            : "rgba(255, 255, 255, 0.25)",
         }}
-        transition={{ type: "spring", stiffness: 350, damping: 25 }}
-        className="flex items-center justify-center rounded-[5px] border backdrop-blur-[2px] transition-colors"
+        transition={{ type: "spring", stiffness: 450, damping: 28 }}
+        className="flex items-center justify-center border backdrop-blur-[2px] transition-colors shadow-sm"
       >
         {hasText && (
-          <span className="font-heading text-[10px] font-bold tracking-wider text-white-pure uppercase px-2 text-center select-none">
+          <span className="font-mono text-[9px] font-bold tracking-wider text-white-pure uppercase px-1.5 text-center select-none leading-none">
             {cursorText}
           </span>
         )}
       </motion.div>
 
-      {/* Center Dot */}
+      {/* Pinpoint Center Precision Dot */}
       {!hasText && (
         <motion.div
           style={{
@@ -95,11 +97,11 @@ export const CustomCursor = () => {
             translateY: "-50%",
           }}
           animate={{
-            scale: isExpanded ? 0 : 1,
+            scale: isHovered ? 0.75 : 1,
             backgroundColor: cursorType === "play" ? "#00E5FF" : "#A855F7",
           }}
-          transition={{ duration: 0.15 }}
-          className="w-1.5 h-1.5 rounded-[2px] shadow-[0_0_8px_#A855F7]"
+          transition={{ duration: 0.12 }}
+          className="w-1.5 h-1.5 rounded-full shadow-[0_0_8px_#A855F7]"
         />
       )}
     </div>
