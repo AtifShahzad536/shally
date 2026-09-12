@@ -62,20 +62,14 @@ export const Navbar = ({ soundState, onNavigate, activeSection }) => {
               playSynthSound("hover");
             }}
             onMouseLeave={() => setCursor("default")}
-            className="flex items-center gap-2 group"
+            className="flex flex-col group"
           >
-            <div className="w-8 h-8 rounded-[5px] bg-gradient-to-br from-purple-electric to-cyan-neon flex items-center justify-center shadow-[0_0_15px_rgba(168,85,247,0.5)] group-hover:scale-105 transition-transform">
-              <Sparkles className="w-4 h-4 text-dark-950 stroke-[2.5]" />
-            </div>
-            <div className="flex flex-col">
-              <span className="font-heading text-lg font-extrabold tracking-wider text-white-pure flex items-center gap-1.5">
-                SHALLY
-                <span className="inline-block w-1.5 h-1.5 rounded-full bg-cyan-neon animate-pulse" />
-              </span>
-              <span className="font-mono text-[9px] uppercase tracking-widest text-purple-soft/80 -mt-1">
-                Creative Studio
-              </span>
-            </div>
+            <span className="font-heading text-xl sm:text-2xl font-black tracking-wider text-white-pure group-hover:text-purple-mist transition-colors">
+              SHALLY
+            </span>
+            <span className="text-[10px] uppercase tracking-widest text-purple-soft/90 -mt-1 font-semibold">
+              Creative Studio
+            </span>
           </a>
 
           {/* Desktop Nav Links */}
