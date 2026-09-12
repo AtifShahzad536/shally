@@ -126,6 +126,24 @@ export const Footer = ({ soundState }) => {
           <div>
             © {new Date().getFullYear()} SHALLY. All creative rights reserved.
           </div>
+
+          <div className="flex items-center gap-1.5">
+            <span>Powered by</span>
+            <a
+              href="https://buildzonetechnology.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              onMouseEnter={() => {
+                setCursor("hover");
+                playSynthSound("hover");
+              }}
+              onMouseLeave={() => setCursor("default")}
+              className="text-cyan-neon font-bold hover:text-purple-mist underline underline-offset-4 decoration-cyan-neon/40 hover:decoration-purple-mist transition-colors"
+            >
+              buildzonetechnology
+            </a>
+          </div>
+
           <div className="flex items-center gap-1.5 text-purple-mist">
             Crafted with <Heart className="w-3.5 h-3.5 text-cute-pink fill-cute-pink inline" /> for fearless brands.
           </div>
