@@ -218,11 +218,19 @@ export const SiteSettingsManager = () => {
 
         // Auto-save immediately so reload / navigation never loses the asset
         try {
-          localStorage.setItem("shally_site_settings", JSON.stringify(updated));
-          await updateSettingsApi(updated);
-          toast.success(isVideo ? "WebM Video compressed, uploaded & saved to database! ✨" : "Image uploaded & auto-saved to database! ✨", { id: toastId });
+          try {
+            localStorage.setItem("shally_site_settings", JSON.stringify(updated));
+          } catch (storageErr) {
+            console.warn("Local storage quota exceeded, syncing directly to MongoDB.");
+          }
+          const saveRes = await updateSettingsApi(updated);
+          if (saveRes && saveRes.success) {
+            toast.success(isVideo ? "Video compressed, uploaded & saved to database! ✨" : "Image uploaded & auto-saved to database! ✨", { id: toastId });
+          } else {
+            toast.success(`Uploaded (${(res.data.bytes / 1024).toFixed(1)} KB) - click Save Video Changes to sync`, { id: toastId });
+          }
         } catch (saveErr) {
-          toast.success(`Uploaded (${(res.data.bytes / 1024).toFixed(1)} KB) - click Save to sync`, { id: toastId });
+          toast.success(`Uploaded (${(res.data.bytes / 1024).toFixed(1)} KB) - click Save Video Changes to sync`, { id: toastId });
         }
       } else {
         toast.error(res.message || "Upload failed. If file is large, please paste direct video URL.", { id: toastId, duration: 6000 });
@@ -239,7 +247,9 @@ export const SiteSettingsManager = () => {
     setSaving(true);
     const toastId = toast.loading("Saving configuration...");
     try {
-      localStorage.setItem("shally_site_settings", JSON.stringify(formData));
+      try {
+        localStorage.setItem("shally_site_settings", JSON.stringify(formData));
+      } catch (storageErr) {}
       const res = await updateSettingsApi(formData);
       if (res.success) {
         toast.success("All section changes saved & live on site! ✨", { id: toastId });

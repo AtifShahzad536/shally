@@ -341,12 +341,15 @@ export const ThreeSpatialVideoChamber = ({
               onMouseLeave={() => setCursor?.("default")}
             >
               <video
+                key={activeVideoUrl}
                 ref={videoRef}
                 src={activeVideoUrl}
                 autoPlay
                 loop
                 muted={isMuted}
                 playsInline
+                preload="auto"
+                crossOrigin="anonymous"
                 onTimeUpdate={handleTimeUpdate}
                 style={{ filter: colorGrades[activeGrade]?.filter || "none" }}
                 className="w-full h-full object-cover transition-all duration-300"
