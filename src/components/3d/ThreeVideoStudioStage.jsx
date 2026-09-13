@@ -53,11 +53,15 @@ export const ThreeVideoStudioStage = ({
     else setStageTilt({ x: 0, y: 0 });
   };
 
-  const isVideoFile = data.videoPreviewUrl && (
+  const isVideoFile = Boolean(data.videoPreviewUrl && (
+    data.videoPreviewUrl.startsWith('data:video/') ||
+    data.videoPreviewUrl.startsWith('blob:') ||
     data.videoPreviewUrl.endsWith('.mp4') || 
     data.videoPreviewUrl.endsWith('.webm') || 
-    data.videoPreviewUrl.includes('/video/upload/')
-  );
+    data.videoPreviewUrl.endsWith('.mov') ||
+    data.videoPreviewUrl.includes('/video/upload/') ||
+    (!data.videoPreviewUrl.endsWith('.png') && !data.videoPreviewUrl.endsWith('.jpg') && !data.videoPreviewUrl.endsWith('.jpeg') && !data.videoPreviewUrl.endsWith('.webp'))
+  ));
 
   return (
     <div className="relative w-full flex flex-col items-center select-none">

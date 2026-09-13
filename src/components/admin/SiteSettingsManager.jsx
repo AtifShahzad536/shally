@@ -622,6 +622,16 @@ export const SiteSettingsManager = () => {
 
                     <button
                       type="button"
+                      onClick={handleSave}
+                      disabled={saving}
+                      className="px-4 py-2 rounded bg-purple-deep hover:bg-purple-electric border border-purple-glow text-white-pure text-xs font-heading font-bold shadow-glow-purple flex items-center gap-1.5 transition-all"
+                    >
+                      <Save className="w-3.5 h-3.5" />
+                      <span>{saving ? "Saving Video..." : "Save Video Changes"}</span>
+                    </button>
+
+                    <button
+                      type="button"
                       onClick={() => setFormData({
                         ...formData,
                         videoWorkspace: { 

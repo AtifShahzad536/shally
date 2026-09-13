@@ -1,6 +1,10 @@
 import { fallbackProjects, fallbackServices, fallbackTestimonials } from "../data/portfolioData";
 
-const rawApi = import.meta.env.VITE_API_URL || "http://localhost:5001/api";
+const defaultApiUrl = typeof window !== "undefined" && window.location.hostname.includes("vercel.app")
+  ? "https://shallyserver.vercel.app/api"
+  : "http://localhost:5001/api";
+
+const rawApi = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? "https://shallyserver.vercel.app/api" : defaultApiUrl);
 const cleanBase = rawApi.trim().replace(/\/+$/, "");
 const API_BASE = cleanBase.endsWith("/api") ? cleanBase : `${cleanBase}/api`;
 

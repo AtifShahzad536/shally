@@ -99,7 +99,9 @@ export const AdminSidebar = ({ sidebarOpen, setSidebarOpen }) => {
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
               API Server
             </span>
-            <span className="text-emerald-400 font-bold">PORT 5001</span>
+            <span className="text-emerald-400 font-bold">
+              {typeof window !== "undefined" && window.location.hostname.includes("vercel.app") ? "ONLINE / CLOUD" : "PORT 5001"}
+            </span>
           </div>
         </div>
       </aside>
