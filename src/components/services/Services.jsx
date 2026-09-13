@@ -173,15 +173,14 @@ export const Services = ({ services, soundState }) => {
                       <span className="text-[6.5px] sm:text-xs font-mono text-white-muted font-medium truncate">
                         {service.stats}
                       </span>
-                      <MagneticButton
+                      <a
                         href="#contact"
-                        onClick={() => playSynthSound("click")}
-                        variant="outline"
-                        className="text-[6.5px] sm:text-xs px-1 sm:px-3 py-0.5 sm:py-1.5 font-semibold shrink-0 rounded-[3px]"
+                        onClick={() => playSynthSound?.("click")}
+                        className="inline-flex items-center gap-0.5 sm:gap-1 px-1.5 sm:px-3 py-0.5 sm:py-1 rounded-[3px] sm:rounded-[4px] bg-dark-800/90 hover:bg-purple-deep/40 border border-white/20 hover:border-purple-glow text-white-crisp hover:text-white-pure text-[7px] sm:text-xs font-heading font-semibold transition-all duration-200 shrink-0 select-none shadow-sm"
                       >
                         <span>Inquire</span>
-                        <ArrowRight className="w-2 h-2 sm:w-3 sm:h-3 ml-0.5" />
-                      </MagneticButton>
+                        <ArrowRight className="w-2 h-2 sm:w-3 sm:h-3" />
+                      </a>
                     </div>
                   </div>
                 </ThreeDTiltCard>
