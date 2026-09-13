@@ -296,22 +296,150 @@ export const compressImageClientSide = (file, maxWidth = 1200, quality = 0.85) =
   });
 };
 
-// Cloudinary File & Video Upload API (with WebP conversion & safe payload handling)
-export const uploadFileToCloudinary = async (file) => {
-  try {
-    const isVideo = file.type?.startsWith("video/");
-    
-    // Check file size warning for Vercel serverless limit (4.5 MB)
-    if (file.size > 4.3 * 1024 * 1024) {
-      if (isVideo) {
-        return {
-          success: false,
-          message: "Video file is larger than 4.5MB (Vercel serverless limit). Please use a compressed clip (<4.5MB) or paste the direct video URL in the input field above."
-        };
-      }
+// Client-side instant WebM video conversion & compression helper
+export const compressVideoToWebm = (file, onProgress) => {
+  return new Promise((resolve) => {
+    if (!window.MediaRecorder || !file || !file.type.startsWith("video/")) {
+      return resolve(file);
     }
 
-    const optimizedFile = await compressImageClientSide(file);
+    // If file is already small (< 3MB), return directly
+    if (file.size <= 3 * 1024 * 1024 && file.type === "video/webm") {
+      return resolve(file);
+    }
+
+    const videoUrl = URL.createObjectURL(file);
+    const video = document.createElement("video");
+    video.src = videoUrl;
+    video.muted = true;
+    video.playsInline = true;
+    video.crossOrigin = "anonymous";
+
+    let isDone = false;
+    const finish = (resultFile) => {
+      if (isDone) return;
+      isDone = true;
+      try {
+        URL.revokeObjectURL(videoUrl);
+      } catch (e) {}
+      resolve(resultFile || file);
+    };
+
+    // Safety timeout: 25 seconds max
+    const timeoutId = setTimeout(() => {
+      finish(file);
+    }, 25000);
+
+    video.onloadedmetadata = () => {
+      // Scale resolution (720p target for fast lightweight upload)
+      let width = video.videoWidth || 1280;
+      let height = video.videoHeight || 720;
+      const maxDim = 1280;
+      if (width > maxDim || height > maxDim) {
+        if (width >= height) {
+          height = Math.round((height * maxDim) / width);
+          width = maxDim;
+        } else {
+          width = Math.round((width * maxDim) / height);
+          height = maxDim;
+        }
+      }
+      width = width % 2 === 0 ? width : width - 1;
+      height = height % 2 === 0 ? height : height - 1;
+
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext("2d", { alpha: false });
+
+      // Supported WebM mime types
+      let mimeType = "video/webm";
+      if (MediaRecorder.isTypeSupported("video/webm;codecs=vp8")) {
+        mimeType = "video/webm;codecs=vp8";
+      } else if (MediaRecorder.isTypeSupported("video/webm;codecs=vp9")) {
+        mimeType = "video/webm;codecs=vp9";
+      }
+
+      let mediaRecorder;
+      try {
+        const stream = canvas.captureStream(30);
+        mediaRecorder = new MediaRecorder(stream, {
+          mimeType,
+          videoBitsPerSecond: 1200000 // 1.2 Mbps bitrate
+        });
+      } catch (err) {
+        clearTimeout(timeoutId);
+        return finish(file);
+      }
+
+      const chunks = [];
+      mediaRecorder.ondataavailable = (e) => {
+        if (e.data && e.data.size > 0) chunks.push(e.data);
+      };
+
+      mediaRecorder.onstop = () => {
+        clearTimeout(timeoutId);
+        const blob = new Blob(chunks, { type: "video/webm" });
+        if (blob.size > 2000) {
+          const webmFile = new File([blob], file.name.replace(/\.[^.]+$/, ".webm"), {
+            type: "video/webm"
+          });
+          finish(webmFile);
+        } else {
+          finish(file);
+        }
+      };
+
+      // Fast playback during recording (4x to 8x acceleration)
+      video.playbackRate = 8.0;
+      video.play().then(() => {
+        mediaRecorder.start(100);
+
+        const renderFrame = () => {
+          if (video.paused || video.ended) {
+            if (mediaRecorder.state === "recording") {
+              mediaRecorder.stop();
+            }
+            return;
+          }
+          ctx.drawImage(video, 0, 0, width, height);
+          if (video.duration && onProgress) {
+            const percent = Math.min(99, Math.round((video.currentTime / video.duration) * 100));
+            onProgress(percent);
+          }
+          requestAnimationFrame(renderFrame);
+        };
+        requestAnimationFrame(renderFrame);
+      }).catch(() => {
+        clearTimeout(timeoutId);
+        finish(file);
+      });
+
+      video.onended = () => {
+        if (mediaRecorder.state === "recording") {
+          mediaRecorder.stop();
+        }
+      };
+    };
+
+    video.onerror = () => {
+      clearTimeout(timeoutId);
+      finish(file);
+    };
+  });
+};
+
+// Cloudinary File & Video Upload API (with Client-side WebP / WebM compression)
+export const uploadFileToCloudinary = async (file, onProgress) => {
+  try {
+    let optimizedFile = file;
+
+    if (file.type?.startsWith("image/")) {
+      optimizedFile = await compressImageClientSide(file);
+    } else if (file.type?.startsWith("video/")) {
+      optimizedFile = await compressVideoToWebm(file, onProgress);
+    }
+
     const formData = new FormData();
     formData.append("file", optimizedFile);
 
@@ -328,7 +456,7 @@ export const uploadFileToCloudinary = async (file) => {
       if (res.status === 413 || resText.includes("Request Entity")) {
         return {
           success: false,
-          message: "File exceeds Vercel 4.5MB upload limit. Please paste a direct video URL or use a video under 4.5MB."
+          message: "Video file is still larger than 4.5MB. Please paste a direct video URL (e.g. Cloudinary/Vimeo/MP4)."
         };
       }
       return { 

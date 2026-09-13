@@ -189,9 +189,13 @@ export const SiteSettingsManager = () => {
 
     const isVideo = file.type?.startsWith("video/");
     setUploadingField(pathKey);
-    const toastId = toast.loading(isVideo ? "Uploading video to Cloudinary..." : "Uploading image & converting to WebP...");
+    const toastId = toast.loading(isVideo ? "Converting video to WebM & compressing..." : "Uploading image & converting to WebP...");
     try {
-      const res = await uploadFileToCloudinary(file);
+      const res = await uploadFileToCloudinary(file, (percent) => {
+        if (isVideo) {
+          toast.loading(`Converting to WebM: ${percent}%...`, { id: toastId });
+        }
+      });
       if (res.success && res.data?.url) {
         const url = res.data.url;
         
@@ -216,7 +220,7 @@ export const SiteSettingsManager = () => {
         try {
           localStorage.setItem("shally_site_settings", JSON.stringify(updated));
           await updateSettingsApi(updated);
-          toast.success(isVideo ? "Video uploaded & auto-saved to database! ✨" : "Image uploaded & auto-saved to database! ✨", { id: toastId });
+          toast.success(isVideo ? "WebM Video compressed, uploaded & saved to database! ✨" : "Image uploaded & auto-saved to database! ✨", { id: toastId });
         } catch (saveErr) {
           toast.success(`Uploaded (${(res.data.bytes / 1024).toFixed(1)} KB) - click Save to sync`, { id: toastId });
         }
