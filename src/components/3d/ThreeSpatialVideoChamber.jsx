@@ -310,21 +310,21 @@ export const ThreeSpatialVideoChamber = ({
               scale: centerScale,
               opacity: centerOpacity,
             }}
-            className="relative w-full max-w-2xl rounded-[12px] bg-dark-900/95 border-2 border-cyan-neon/50 p-3 sm:p-4 shadow-[0_25px_80px_rgba(0,0,0,0.9)] z-30"
+            className="relative w-full max-w-2xl rounded-[10px] sm:rounded-[12px] bg-dark-900/95 border-2 border-cyan-neon/50 p-2 sm:p-4 shadow-[0_25px_80px_rgba(0,0,0,0.9)] z-30"
           >
             {/* Monitor Top Bezel HUD */}
-            <div className="flex items-center justify-between pb-3 border-b border-white/10 text-xs font-mono mb-3">
-              <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-cyan-neon animate-ping" />
-                <span className="text-white-crisp font-bold uppercase tracking-wider">
-                  SHALLY_3D_CORE // 4K RENDER VIEW
+            <div className="flex items-center justify-between pb-2 sm:pb-3 border-b border-white/10 text-[10px] sm:text-xs font-mono mb-2 sm:mb-3">
+              <div className="flex items-center gap-1.5 sm:gap-2 truncate">
+                <span className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-cyan-neon animate-ping shrink-0" />
+                <span className="text-white-crisp font-bold uppercase tracking-wider text-[9px] sm:text-xs truncate">
+                  SHALLY_3D_CORE // 4K
                 </span>
               </div>
-              <div className="flex items-center gap-3">
-                <span className="px-2 py-0.5 rounded-[3px] bg-cyan-deep/40 border border-cyan-neon/40 text-cyan-neon text-[10px] font-bold">
+              <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+                <span className="px-1.5 sm:px-2 py-0.5 rounded-[3px] bg-cyan-deep/40 border border-cyan-neon/40 text-cyan-neon text-[8.5px] sm:text-[10px] font-bold">
                   {colorGrades[activeGrade].badge}
                 </span>
-                <span ref={timecodeRef} className="text-purple-mist font-bold">
+                <span ref={timecodeRef} className="text-purple-mist font-bold text-[9px] sm:text-xs">
                   00:00:12:18
                 </span>
               </div>
@@ -332,7 +332,7 @@ export const ThreeSpatialVideoChamber = ({
 
             {/* Video Viewport */}
             <div 
-              className="relative aspect-video rounded-[8px] overflow-hidden bg-black border border-cyan-neon/40 group cursor-pointer"
+              className="relative aspect-video rounded-[6px] sm:rounded-[8px] overflow-hidden bg-black border border-cyan-neon/40 group cursor-pointer"
               onClick={() => {
                 setIsPlaying(!isPlaying);
                 playSynthSound?.("click");
@@ -353,35 +353,35 @@ export const ThreeSpatialVideoChamber = ({
               />
 
               {/* Subtitle / Hook Tag */}
-              <div className="absolute bottom-4 left-4 right-4 flex flex-col items-center text-center pointer-events-none">
-                <span className="font-heading text-xs sm:text-sm font-black tracking-wide text-white-pure uppercase bg-dark-950/90 px-3.5 py-1.5 rounded-[4px] border border-cyan-neon/50 shadow-glow-cyan">
+              <div className="absolute bottom-2 sm:bottom-4 left-2 sm:left-4 right-2 sm:right-4 flex flex-col items-center text-center pointer-events-none">
+                <span className="font-heading text-[9px] sm:text-sm font-black tracking-wide text-white-pure uppercase bg-dark-950/90 px-2 sm:px-3.5 py-1 sm:py-1.5 rounded-[4px] border border-cyan-neon/50 shadow-glow-cyan line-clamp-1 sm:line-clamp-none">
                   {data.subtitleHookText}
                 </span>
-                <span className="font-mono text-[9px] text-cute-pink mt-1 tracking-widest bg-dark-900/90 px-2 py-0.5 rounded-[3px] border border-cute-pink/30">
-                  [3D SPATIAL KINETIC RETENTION ENGINE]
+                <span className="font-mono text-[7.5px] sm:text-[9px] text-cute-pink mt-0.5 sm:mt-1 tracking-widest bg-dark-900/90 px-1.5 sm:px-2 py-0.5 rounded-[3px] border border-cute-pink/30">
+                  [3D SPATIAL KINETIC ENGINE]
                 </span>
               </div>
 
               {!isPlaying && (
                 <div className="absolute inset-0 bg-dark-950/60 flex items-center justify-center">
-                  <div className="w-14 h-14 rounded-[8px] bg-gradient-to-r from-purple-deep to-cyan-deep text-white-pure flex items-center justify-center shadow-glow-purple border border-white/20">
-                    <Play className="w-7 h-7 ml-1 fill-current" />
+                  <div className="w-10 sm:w-14 h-10 sm:h-14 rounded-[8px] bg-gradient-to-r from-purple-deep to-cyan-deep text-white-pure flex items-center justify-center shadow-glow-purple border border-white/20">
+                    <Play className="w-5 sm:w-7 h-5 sm:h-7 ml-0.5 sm:ml-1 fill-current" />
                   </div>
                 </div>
               )}
             </div>
 
             {/* Transport Controls */}
-            <div className="mt-3 flex items-center justify-between text-xs font-mono">
-              <div className="flex items-center gap-2">
+            <div className="mt-2.5 sm:mt-3 flex items-center justify-between text-xs font-mono gap-1.5 sm:gap-2">
+              <div className="flex items-center gap-1 sm:gap-2">
                 <button
                   onClick={() => {
                     setIsPlaying(!isPlaying);
                     playSynthSound?.("click");
                   }}
-                  className="px-3 py-1 rounded-[4px] bg-gradient-to-r from-purple-deep to-cyan-deep text-white-pure font-bold border border-cyan-neon/40 shadow-glow-cyan/30 flex items-center gap-1 hover:brightness-110"
+                  className="px-2 sm:px-3 py-1 rounded-[4px] bg-gradient-to-r from-purple-deep to-cyan-deep text-white-pure font-bold border border-cyan-neon/40 shadow-glow-cyan/30 flex items-center gap-1 hover:brightness-110 text-[9px] sm:text-xs"
                 >
-                  {isPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5 fill-current" />}
+                  {isPlaying ? <Pause className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> : <Play className="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-current" />}
                   <span>{isPlaying ? "PAUSE" : "PLAY"}</span>
                 </button>
 
@@ -390,10 +390,10 @@ export const ThreeSpatialVideoChamber = ({
                     seekToPercent(0);
                     playSynthSound?.("cut");
                   }}
-                  className="p-1.5 rounded-[3px] bg-dark-850 hover:bg-dark-800 text-white-dim hover:text-white-pure border border-white/10"
+                  className="p-1 sm:p-1.5 rounded-[3px] bg-dark-850 hover:bg-dark-800 text-white-dim hover:text-white-pure border border-white/10"
                   title="Restart Clip"
                 >
-                  <RotateCcw className="w-3.5 h-3.5" />
+                  <RotateCcw className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                 </button>
 
                 {/* Audio Sound Toggle */}
@@ -402,20 +402,20 @@ export const ThreeSpatialVideoChamber = ({
                     setIsMuted(!isMuted);
                     playSynthSound?.("click");
                   }}
-                  className={`px-2.5 py-1 rounded-[4px] font-bold border flex items-center gap-1.5 transition-all ${
+                  className={`px-1.5 sm:px-2.5 py-1 rounded-[4px] font-bold border flex items-center gap-1 sm:gap-1.5 transition-all text-[9px] sm:text-xs ${
                     !isMuted 
                       ? "bg-cute-pink/30 border-cute-pink text-cute-pink shadow-glow-pink" 
                       : "bg-dark-850 hover:bg-dark-800 text-white-muted border-white/10"
                   }`}
                   title={isMuted ? "Unmute Video Sound" : "Mute Video Sound"}
                 >
-                  {isMuted ? <VolumeX className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5 text-cute-pink animate-pulse" />}
-                  <span className="text-[10px]">{isMuted ? "MUTED" : "AUDIO ON"}</span>
+                  {isMuted ? <VolumeX className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> : <Volume2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-cute-pink animate-pulse" />}
+                  <span className="text-[8.5px] sm:text-[10px]">{isMuted ? "MUTED" : "SOUND"}</span>
                 </button>
               </div>
 
-              <div className="flex items-center gap-1 bg-dark-850 px-2 py-1 rounded-[4px] border border-white/10">
-                <span className="text-[10px] text-white-muted">Speed:</span>
+              <div className="flex items-center gap-0.5 sm:gap-1 bg-dark-850 px-1.5 sm:px-2 py-1 rounded-[4px] border border-white/10 shrink-0">
+                <span className="text-[8.5px] sm:text-[10px] text-white-muted hidden sm:inline">Speed:</span>
                 {[1, 1.5, 2].map((s) => (
                   <button
                     key={s}
@@ -423,7 +423,7 @@ export const ThreeSpatialVideoChamber = ({
                       setSpeedMultiplier(s);
                       playSynthSound?.("click");
                     }}
-                    className={`px-1.5 py-0.5 rounded-[2px] text-[10px] font-bold ${
+                    className={`px-1 sm:px-1.5 py-0.5 rounded-[2px] text-[8.5px] sm:text-[10px] font-bold ${
                       speedMultiplier === s 
                         ? "bg-cyan-neon text-dark-950" 
                         : "text-white-dim hover:text-white-crisp"
@@ -484,24 +484,24 @@ export const ThreeSpatialVideoChamber = ({
               y: bottomY,
               opacity: bottomOpacity,
             }}
-            className="absolute -bottom-24 w-full max-w-4xl p-4 rounded-[10px] bg-dark-900/95 border border-cyan-neon/30 shadow-[0_30px_90px_rgba(0,0,0,0.95)] z-40"
+            className="absolute -bottom-24 w-full max-w-4xl p-2.5 sm:p-4 rounded-[8px] sm:rounded-[10px] bg-dark-900/95 border border-cyan-neon/30 shadow-[0_30px_90px_rgba(0,0,0,0.95)] z-40"
           >
-            <div className="flex items-center justify-between text-[10px] font-mono text-white-muted mb-2">
-              <div className="flex items-center gap-3">
-                <span className="text-white-crisp font-bold">3D SPATIAL NLE TIMELINE DECK</span>
-                <span className="text-purple-mist">4 MULTI-DEPTH Z-TRACKS</span>
+            <div className="flex items-center justify-between text-[8px] sm:text-[10px] font-mono text-white-muted mb-1.5 sm:mb-2 gap-1 overflow-hidden">
+              <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
+                <span className="text-white-crisp font-bold whitespace-nowrap">NLE TIMELINE DECK</span>
+                <span className="text-purple-mist hidden sm:inline whitespace-nowrap">4 MULTI-DEPTH Z-TRACKS</span>
               </div>
-              <div className="flex items-center gap-4 text-cyan-ice font-bold">
-                <span>00:00:00</span>
-                <span>00:00:10</span>
-                <span>00:00:20</span>
-                <span>00:00:30</span>
+              <div className="flex items-center gap-2 sm:gap-4 text-cyan-ice font-bold whitespace-nowrap text-[8px] sm:text-[10px]">
+                <span>00:00</span>
+                <span>00:10</span>
+                <span>00:20</span>
+                <span className="hidden sm:inline">00:30</span>
               </div>
             </div>
 
             {/* Timeline Multi-Tracks */}
             <div 
-              className="relative bg-dark-950 rounded-[6px] border border-white/15 p-2.5 flex flex-col gap-2 cursor-pointer overflow-hidden shadow-inner"
+              className="relative bg-dark-950 rounded-[4px] sm:rounded-[6px] border border-white/15 p-1.5 sm:p-2.5 flex flex-col gap-1.5 sm:gap-2 cursor-pointer overflow-hidden shadow-inner"
               onClick={(e) => {
                 const rect = e.currentTarget.getBoundingClientRect();
                 const p = ((e.clientX - rect.left) / rect.width) * 100;
@@ -515,51 +515,51 @@ export const ThreeSpatialVideoChamber = ({
                 style={{ left: "38%" }}
                 className="absolute top-0 bottom-0 w-[2px] bg-cyan-neon z-30 shadow-[0_0_15px_#00E5FF] pointer-events-none"
               >
-                <div className="w-3.5 h-3.5 bg-cyan-neon rotate-45 -ml-[6px] -mt-1 rounded-[1px] shadow-glow-cyan" />
+                <div className="w-2.5 sm:w-3.5 h-2.5 sm:h-3.5 bg-cyan-neon rotate-45 -ml-[4px] sm:-ml-[6px] -mt-1 rounded-[1px] shadow-glow-cyan" />
               </div>
 
               {/* Track V2 */}
-              <div className="flex items-center gap-2">
-                <span className="w-14 shrink-0 font-mono text-[9px] text-purple-mist font-bold bg-purple-deep/40 px-1.5 py-0.5 rounded-[2px] border border-purple-glow/30">
+              <div className="flex items-center gap-1 sm:gap-2">
+                <span className="w-9 sm:w-14 shrink-0 font-mono text-[7px] sm:text-[9px] text-purple-mist font-bold bg-purple-deep/40 px-1 py-0.5 rounded-[2px] border border-purple-glow/30 text-center truncate">
                   V2 [FX]
                 </span>
-                <div className="flex-1 grid grid-cols-12 gap-1 h-6">
-                  <div className="col-span-3 bg-purple-deep/70 border border-purple-glow rounded-[2px] px-2 flex items-center text-[8px] font-mono text-white-pure truncate">
+                <div className="flex-1 grid grid-cols-12 gap-1 h-5 sm:h-6">
+                  <div className="col-span-4 sm:col-span-3 bg-purple-deep/70 border border-purple-glow rounded-[2px] px-1 sm:px-2 flex items-center text-[7px] sm:text-[8px] font-mono text-white-pure truncate">
                     {data.trackV2Label}
                   </div>
-                  <div className="col-span-5 bg-cute-pink/40 border border-cute-pink/50 rounded-[2px] px-2 flex items-center text-[8px] font-mono text-white-crisp truncate">
-                    [3D KINETIC SUBTITLES]
+                  <div className="col-span-4 sm:col-span-5 bg-cute-pink/40 border border-cute-pink/50 rounded-[2px] px-1 sm:px-2 flex items-center text-[7px] sm:text-[8px] font-mono text-white-crisp truncate">
+                    [3D SUBTITLES]
                   </div>
-                  <div className="col-span-4 bg-cyan-deep/50 border border-cyan-neon/50 rounded-[2px] px-2 flex items-center text-[8px] font-mono text-white-crisp truncate">
-                    [CTA OUTRO CARD]
+                  <div className="col-span-4 bg-cyan-deep/50 border border-cyan-neon/50 rounded-[2px] px-1 sm:px-2 flex items-center text-[7px] sm:text-[8px] font-mono text-white-crisp truncate">
+                    [OUTRO]
                   </div>
                 </div>
               </div>
 
               {/* Track V1 */}
-              <div className="flex items-center gap-2">
-                <span className="w-14 shrink-0 font-mono text-[9px] text-cyan-ice font-bold bg-cyan-deep/40 px-1.5 py-0.5 rounded-[2px] border border-cyan-neon/30">
+              <div className="flex items-center gap-1 sm:gap-2">
+                <span className="w-9 sm:w-14 shrink-0 font-mono text-[7px] sm:text-[9px] text-cyan-ice font-bold bg-cyan-deep/40 px-1 py-0.5 rounded-[2px] border border-cyan-neon/30 text-center truncate">
                   V1 [4K]
                 </span>
-                <div className="flex-1 grid grid-cols-12 gap-1 h-7">
-                  <div className="col-span-4 bg-cyan-900/70 border border-cyan-neon/60 rounded-[2px] px-2 flex items-center text-[8px] font-mono text-cyan-ice truncate">
+                <div className="flex-1 grid grid-cols-12 gap-1 h-5 sm:h-7">
+                  <div className="col-span-4 bg-cyan-900/70 border border-cyan-neon/60 rounded-[2px] px-1 sm:px-2 flex items-center text-[7px] sm:text-[8px] font-mono text-cyan-ice truncate">
                     {data.trackV1Label}
                   </div>
-                  <div className="col-span-4 bg-indigo-900/70 border border-purple-glow/50 rounded-[2px] px-2 flex items-center text-[8px] font-mono text-purple-mist truncate">
-                    BROLL_MONTAGE.mp4
+                  <div className="col-span-4 bg-indigo-900/70 border border-purple-glow/50 rounded-[2px] px-1 sm:px-2 flex items-center text-[7px] sm:text-[8px] font-mono text-purple-mist truncate">
+                    BROLL.mp4
                   </div>
-                  <div className="col-span-4 bg-cyan-900/70 border border-cyan-neon/60 rounded-[2px] px-2 flex items-center text-[8px] font-mono text-cyan-ice truncate">
-                    PRODUCT_HERO_SHOT.mp4
+                  <div className="col-span-4 bg-cyan-900/70 border border-cyan-neon/60 rounded-[2px] px-1 sm:px-2 flex items-center text-[7px] sm:text-[8px] font-mono text-cyan-ice truncate">
+                    HERO.mp4
                   </div>
                 </div>
               </div>
 
               {/* Track A1 */}
-              <div className="flex items-center gap-2">
-                <span className="w-14 shrink-0 font-mono text-[9px] text-emerald-300 font-bold bg-emerald-500/20 px-1.5 py-0.5 rounded-[2px] border border-emerald-400/30">
+              <div className="flex items-center gap-1 sm:gap-2">
+                <span className="w-9 sm:w-14 shrink-0 font-mono text-[7px] sm:text-[9px] text-emerald-300 font-bold bg-emerald-500/20 px-1 py-0.5 rounded-[2px] border border-emerald-400/30 text-center truncate">
                   A1 [OST]
                 </span>
-                <div className="flex-1 bg-emerald-950/40 border border-emerald-500/30 rounded-[2px] h-6 px-2 flex items-center justify-between text-[8px] font-mono text-emerald-300 truncate">
+                <div className="flex-1 bg-emerald-950/40 border border-emerald-500/30 rounded-[2px] h-5 sm:h-6 px-1.5 sm:px-2 flex items-center justify-between text-[7px] sm:text-[8px] font-mono text-emerald-300 truncate">
                   {data.trackA2Label}
                 </div>
               </div>
