@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import * as THREE from "three";
 import { 
-  Play, Pause, RotateCcw, Volume2, Sparkles, Film, 
+  Play, Pause, RotateCcw, Volume2, VolumeX, Sparkles, Film, 
   Layers, Zap, Check, Eye, Compass, Camera, Maximize2, 
   Flame, Sliders, Activity, Disc, Radio
 } from "lucide-react";
@@ -15,9 +15,11 @@ export const ThreeSpatialVideoChamber = ({
   const { playSynthSound } = soundState || { playSynthSound: () => {} };
   const sectionRef = useRef(null);
   const canvasRef = useRef(null);
+  const videoRef = useRef(null);
 
   // States
   const [isPlaying, setIsPlaying] = useState(true);
+  const [isMuted, setIsMuted] = useState(true);
   const [activeGrade, setActiveGrade] = useState("cyber");
   const [speedMultiplier, setSpeedMultiplier] = useState(1);
   const [activeSoundPad, setActiveSoundPad] = useState(null);
@@ -28,24 +30,58 @@ export const ThreeSpatialVideoChamber = ({
   const playheadRef = useRef(null);
   const playPos = useRef(38);
 
+  // Sync Video Play / Pause with state
   useEffect(() => {
-    let animId;
+    if (!videoRef.current) return;
     if (isPlaying) {
-      const step = () => {
-        playPos.current = (playPos.current + 0.14 * speedMultiplier) % 100;
-        const p = playPos.current;
-        if (playheadRef.current) playheadRef.current.style.left = `${p}%`;
-
-        const sec = Math.floor((p * 0.3) % 60).toString().padStart(2, "0");
-        const frm = Math.floor((p * 1.8) % 60).toString().padStart(2, "0");
-        if (timecodeRef.current) timecodeRef.current.textContent = `00:00:${sec}:${frm}`;
-
-        animId = requestAnimationFrame(step);
-      };
-      animId = requestAnimationFrame(step);
+      const playPromise = videoRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          // Autoplay policy fallback
+        });
+      }
+    } else {
+      videoRef.current.pause();
     }
-    return () => cancelAnimationFrame(animId);
-  }, [isPlaying, speedMultiplier]);
+  }, [isPlaying]);
+
+  // Sync Video Speed
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.playbackRate = speedMultiplier;
+    }
+  }, [speedMultiplier]);
+
+  // Sync Video Mute
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.muted = isMuted;
+    }
+  }, [isMuted]);
+
+  // Time update sync from video
+  const handleTimeUpdate = () => {
+    if (videoRef.current && videoRef.current.duration) {
+      const cur = videoRef.current.currentTime;
+      const dur = videoRef.current.duration;
+      const p = (cur / dur) * 100;
+      playPos.current = p;
+      if (playheadRef.current) playheadRef.current.style.left = `${p}%`;
+
+      const min = Math.floor(cur / 60).toString().padStart(2, "0");
+      const sec = Math.floor(cur % 60).toString().padStart(2, "0");
+      const frm = Math.floor((cur % 1) * 30).toString().padStart(2, "0");
+      if (timecodeRef.current) timecodeRef.current.textContent = `00:${min}:${sec}:${frm}`;
+    }
+  };
+
+  const seekToPercent = (p) => {
+    playPos.current = p;
+    if (playheadRef.current) playheadRef.current.style.left = `${p}%`;
+    if (videoRef.current && videoRef.current.duration) {
+      videoRef.current.currentTime = (p / 100) * videoRef.current.duration;
+    }
+  };
 
   // Direct Zero-Lag Scroll Tracking synced with Lenis
   const { scrollYProgress } = useScroll({
@@ -169,18 +205,10 @@ export const ThreeSpatialVideoChamber = ({
     }
   };
 
-  const soundPads = [
-    { id: "sub", name: "808 Sub Drop", sound: "success", freq: "40 Hz" },
-    { id: "whoosh", name: "Whip Whoosh", sound: "cut", freq: "2.4 kHz" },
-    { id: "pop", name: "Dopamine Pop", sound: "click", freq: "8.1 kHz" },
-    { id: "riser", name: "Pitch Riser", sound: "hover", freq: "12 kHz" }
-  ];
-
-  const isVideoFile = data.videoPreviewUrl && (
-    data.videoPreviewUrl.endsWith('.mp4') || 
-    data.videoPreviewUrl.endsWith('.webm') || 
-    data.videoPreviewUrl.includes('/video/upload/')
-  );
+  const defaultDemoVideo = "https://assets.mixkit.co/videos/preview/mixkit-cyberpunk-woman-in-a-neon-world-43187-large.mp4";
+  const activeVideoUrl = (data.videoPreviewUrl && !data.videoPreviewUrl.endsWith(".png") && !data.videoPreviewUrl.endsWith(".jpg") && !data.videoPreviewUrl.endsWith(".jpeg") && !data.videoPreviewUrl.endsWith(".webp"))
+    ? data.videoPreviewUrl
+    : defaultDemoVideo;
 
   return (
     <section 
@@ -302,27 +330,20 @@ export const ThreeSpatialVideoChamber = ({
                 setIsPlaying(!isPlaying);
                 playSynthSound?.("click");
               }}
-              onMouseEnter={() => setCursor("play", isPlaying ? "PAUSE" : "PLAY")}
-              onMouseLeave={() => setCursor("default")}
+              onMouseEnter={() => setCursor?.("play", isPlaying ? "PAUSE" : "PLAY")}
+              onMouseLeave={() => setCursor?.("default")}
             >
-              {isVideoFile ? (
-                <video
-                  src={data.videoPreviewUrl}
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  style={{ filter: colorGrades[activeGrade].filter }}
-                  className="w-full h-full object-cover transition-all duration-300"
-                />
-              ) : (
-                <img
-                  src={data.videoPreviewUrl}
-                  alt="3D Cinema Core"
-                  style={{ filter: colorGrades[activeGrade].filter }}
-                  className="w-full h-full object-cover brightness-95 contrast-105 transition-all duration-300"
-                />
-              )}
+              <video
+                ref={videoRef}
+                src={activeVideoUrl}
+                autoPlay
+                loop
+                muted={isMuted}
+                playsInline
+                onTimeUpdate={handleTimeUpdate}
+                style={{ filter: colorGrades[activeGrade]?.filter || "none" }}
+                className="w-full h-full object-cover transition-all duration-300"
+              />
 
               {/* Subtitle / Hook Tag */}
               <div className="absolute bottom-4 left-4 right-4 flex flex-col items-center text-center pointer-events-none">
@@ -359,12 +380,30 @@ export const ThreeSpatialVideoChamber = ({
 
                 <button
                   onClick={() => {
-                    playPos.current = 0;
+                    seekToPercent(0);
                     playSynthSound?.("cut");
                   }}
                   className="p-1.5 rounded-[3px] bg-dark-850 hover:bg-dark-800 text-white-dim hover:text-white-pure border border-white/10"
+                  title="Restart Clip"
                 >
                   <RotateCcw className="w-3.5 h-3.5" />
+                </button>
+
+                {/* Audio Sound Toggle */}
+                <button
+                  onClick={() => {
+                    setIsMuted(!isMuted);
+                    playSynthSound?.("click");
+                  }}
+                  className={`px-2.5 py-1 rounded-[4px] font-bold border flex items-center gap-1.5 transition-all ${
+                    !isMuted 
+                      ? "bg-cute-pink/30 border-cute-pink text-cute-pink shadow-glow-pink" 
+                      : "bg-dark-850 hover:bg-dark-800 text-white-muted border-white/10"
+                  }`}
+                  title={isMuted ? "Unmute Video Sound" : "Mute Video Sound"}
+                >
+                  {isMuted ? <VolumeX className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5 text-cute-pink animate-pulse" />}
+                  <span className="text-[10px]">{isMuted ? "MUTED" : "AUDIO ON"}</span>
                 </button>
               </div>
 
@@ -459,8 +498,7 @@ export const ThreeSpatialVideoChamber = ({
               onClick={(e) => {
                 const rect = e.currentTarget.getBoundingClientRect();
                 const p = ((e.clientX - rect.left) / rect.width) * 100;
-                playPos.current = p;
-                if (playheadRef.current) playheadRef.current.style.left = `${p}%`;
+                seekToPercent(p);
                 playSynthSound?.("cut");
               }}
             >

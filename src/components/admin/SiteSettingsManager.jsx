@@ -51,7 +51,7 @@ export const SiteSettingsManager = () => {
       headlineHighlight: "Hypnotic Edits",
       headlineSuffix: "Frame by Frame",
       description: "Short-form video editing isn't just cutting clips—it's psychological pacing, rhythmic sound design, speed ramps, and retention engineering.",
-      videoPreviewUrl: "/shally.png",
+      videoPreviewUrl: "https://assets.mixkit.co/videos/preview/mixkit-cyberpunk-woman-in-a-neon-world-43187-large.mp4",
       subtitleHookText: "“STOP LOSING 70% OF SCROLLERS IN THE FIRST 3 SECONDS.”",
       trackV2Label: "[3s HOOK TITLE]",
       trackV1Label: "HOOK_CLIP_A.mp4",
@@ -551,6 +551,116 @@ export const SiteSettingsManager = () => {
                   })}
                   className="w-full px-3 py-2 rounded bg-dark-950 border border-cute-pink/40 text-cute-pink text-xs"
                 />
+              </div>
+            </div>
+
+            {/* Video File Upload & Live CMS Viewport */}
+            <div className="glass-panel p-6 rounded-[5px] border border-white/10 bg-dark-900/90 space-y-4">
+              <div className="pb-3 border-b border-white/10 flex items-center justify-between">
+                <span className="font-heading font-bold text-sm text-white-pure flex items-center gap-2">
+                  <Film className="w-4 h-4 text-cyan-neon" />
+                  Video Studio 3D Viewport Video (MP4 / WebM / Cloudinary)
+                </span>
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-deep/40 border border-cyan-neon/40 text-cyan-neon font-bold">
+                  AUTOPLAY 4K CORE
+                </span>
+              </div>
+
+              <div className="flex flex-col lg:flex-row items-start gap-6">
+                {/* Live Video Player Preview */}
+                <div className="w-full lg:w-72 aspect-video rounded-lg overflow-hidden bg-dark-950 border-2 border-cyan-neon/40 flex items-center justify-center relative shrink-0 shadow-glow-cyan/20">
+                  {formData.videoWorkspace.videoPreviewUrl ? (
+                    <video 
+                      src={formData.videoWorkspace.videoPreviewUrl} 
+                      autoPlay 
+                      loop 
+                      muted 
+                      playsInline 
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <Film className="w-10 h-10 text-cyan-neon/40" />
+                  )}
+                  <div className="absolute top-2 right-2 bg-dark-950/80 px-2 py-0.5 rounded text-[9px] font-mono text-cyan-neon font-bold border border-cyan-neon/30">
+                    LIVE PREVIEW
+                  </div>
+                </div>
+
+                <div className="flex-1 space-y-3 w-full">
+                  <div>
+                    <label className="font-mono text-xs uppercase tracking-wider text-white-muted block mb-1">
+                      Direct Video URL (MP4 / WebM / Cloudinary / Custom CDN)
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.videoWorkspace.videoPreviewUrl}
+                      onChange={(e) => setFormData({
+                        ...formData,
+                        videoWorkspace: { ...formData.videoWorkspace, videoPreviewUrl: e.target.value }
+                      })}
+                      placeholder="https://.../video.mp4"
+                      className="w-full px-3 py-2 rounded bg-dark-950 border border-white/15 text-white-crisp text-xs font-mono"
+                    />
+                  </div>
+
+                  <div className="flex flex-wrap items-center gap-3 pt-1">
+                    <label className="inline-flex items-center gap-2 px-4 py-2 rounded bg-cyan-deep/30 border border-cyan-neon/40 text-cyan-ice text-xs font-mono font-medium hover:bg-cyan-deep/50 cursor-pointer transition-all">
+                      <UploadCloud className="w-4 h-4 text-cyan-neon" />
+                      <span>{uploadingField === "videoWorkspace.videoPreviewUrl" ? "Uploading Video..." : "Upload Video File (MP4/WebM/MOV)"}</span>
+                      <input
+                        type="file"
+                        accept="video/*"
+                        onChange={(e) => handleFileUpload(e, "videoWorkspace.videoPreviewUrl")}
+                        className="hidden"
+                      />
+                    </label>
+
+                    <button
+                      type="button"
+                      onClick={() => setFormData({
+                        ...formData,
+                        videoWorkspace: { 
+                          ...formData.videoWorkspace, 
+                          videoPreviewUrl: "https://assets.mixkit.co/videos/preview/mixkit-cyberpunk-woman-in-a-neon-world-43187-large.mp4" 
+                        }
+                      })}
+                      className="px-3 py-2 rounded bg-dark-850 border border-purple-glow/30 text-purple-mist hover:text-white-crisp text-xs font-mono hover:border-purple-glow/60 transition-all"
+                    >
+                      ⚡ Reset to Cyberpunk Demo
+                    </button>
+                  </div>
+
+                  {/* Preset Fast Select */}
+                  <div className="pt-2 border-t border-white/10">
+                    <span className="font-mono text-[10px] text-white-muted uppercase block mb-1.5">
+                      Or Quick-Select Curated Cinematic Presets:
+                    </span>
+                    <div className="flex flex-wrap gap-2">
+                      {[
+                        { name: "🔮 Cyberpunk Girl", url: "https://assets.mixkit.co/videos/preview/mixkit-cyberpunk-woman-in-a-neon-world-43187-large.mp4" },
+                        { name: "🏙️ Sci-Fi City", url: "https://assets.mixkit.co/videos/preview/mixkit-futuristic-city-with-neon-lights-and-flying-cars-42777-large.mp4" },
+                        { name: "🎬 Editing Suite", url: "https://assets.mixkit.co/videos/preview/mixkit-hands-of-a-video-editor-working-with-software-43407-large.mp4" },
+                        { name: "📊 Motion HUD", url: "https://assets.mixkit.co/videos/preview/mixkit-digital-animation-of-screens-with-charts-31914-large.mp4" }
+                      ].map((preset, idx) => (
+                        <button
+                          key={idx}
+                          type="button"
+                          onClick={() => setFormData({
+                            ...formData,
+                            videoWorkspace: { ...formData.videoWorkspace, videoPreviewUrl: preset.url }
+                          })}
+                          className={`px-2.5 py-1 rounded text-[11px] font-mono border transition-all ${
+                            formData.videoWorkspace.videoPreviewUrl === preset.url
+                              ? "bg-cyan-neon text-dark-950 font-bold border-cyan-neon"
+                              : "bg-dark-950 border-white/10 text-white-dim hover:text-white-crisp hover:border-cyan-neon/40"
+                          }`}
+                        >
+                          {preset.name}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 

@@ -9,7 +9,9 @@ export const VideoWorkspace = ({ soundState, videoData = {} }) => {
     headlineHighlight: videoData.headlineHighlight || "Hypnotic Edits",
     headlineSuffix: videoData.headlineSuffix || "in 3D Virtual Space",
     description: videoData.description || "Short-form video editing isn't just cutting clips—it's psychological pacing, rhythmic sound design, speed ramps, and retention engineering assembled in a live 3D space.",
-    videoPreviewUrl: videoData.videoPreviewUrl || "/shally.png",
+    videoPreviewUrl: (videoData.videoPreviewUrl && videoData.videoPreviewUrl !== "/shally.png")
+      ? videoData.videoPreviewUrl
+      : "https://assets.mixkit.co/videos/preview/mixkit-cyberpunk-woman-in-a-neon-world-43187-large.mp4",
     subtitleHookText: videoData.subtitleHookText || "“STOP LOSING 70% OF SCROLLERS IN THE FIRST 3 SECONDS.”",
     trackV2Label: videoData.trackV2Label || "[3s HOOK TITLE]",
     trackV1Label: videoData.trackV1Label || "HOOK_CLIP_A.mp4",
