@@ -96,10 +96,10 @@ export const Services = ({ services, soundState }) => {
         {/* THE 3D SCI-FI BLAST DOOR PORTAL MECHANISM */}
         {/* ========================================================================= */}
         <div 
-          className="relative w-full min-h-[440px] sm:min-h-[680px] flex items-center justify-center overflow-hidden rounded-[10px] p-1.5 sm:p-4 border border-white/10 bg-dark-950/60 shadow-[0_20px_70px_rgba(0,0,0,0.9)]"
+          className="relative w-full min-h-[520px] sm:min-h-[680px] flex items-center justify-center overflow-hidden rounded-[10px] p-2 sm:p-4 border border-white/10 bg-dark-950/60 shadow-[0_20px_70px_rgba(0,0,0,0.9)]"
           style={{ transformStyle: "preserve-3d" }}
         >
-          {/* Inner Reveal Stage (3 Services Cores inside Vault) in 1 Line */}
+          {/* Inner Reveal Stage (3 Services Cores inside Vault) in 2 columns on mobile */}
           <motion.div
             style={{
               scale: coreScale,
@@ -107,18 +107,19 @@ export const Services = ({ services, soundState }) => {
               opacity: coreOpacity,
               transformStyle: "preserve-3d"
             }}
-            className="w-full grid grid-cols-3 gap-1.5 sm:gap-6 z-10"
+            className="w-full grid grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-6 z-10"
           >
-            {services.map((service) => {
+            {services.map((service, idx) => {
               const Icon = iconMap[service.icon] || Sparkles;
               const accent = serviceAccents[service.id] || serviceAccents["01"];
+              const isThirdCard = idx === 2;
 
               return (
                 <ThreeDTiltCard
                   key={service.id}
                   maxTilt={10}
                   scale={1.01}
-                  className="h-full"
+                  className={`h-full ${isThirdCard ? "col-span-2 lg:col-span-1 max-w-sm lg:max-w-none mx-auto w-full" : "w-full"}`}
                 >
                   <div
                     onMouseEnter={() => {
@@ -126,7 +127,7 @@ export const Services = ({ services, soundState }) => {
                       playSynthSound("hover");
                     }}
                     onMouseLeave={() => setCursor("default")}
-                    className={`glass-panel p-2 sm:p-7 rounded-[6px] sm:rounded-[8px] border border-white/20 bg-dark-900/95 flex flex-col justify-between relative group transition-all duration-500 overflow-hidden h-full ${accent.hoverBorder} shadow-2xl hover:shadow-[0_25px_60px_rgba(168,85,247,0.3)]`}
+                    className={`glass-panel p-3 sm:p-7 rounded-[8px] border border-white/20 bg-dark-900/95 flex flex-col justify-between relative group transition-all duration-500 overflow-hidden h-full ${accent.hoverBorder} shadow-2xl hover:shadow-[0_25px_60px_rgba(168,85,247,0.3)]`}
                   >
                     {/* Background Card Ambient Glow */}
                     <div className={`absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl ${accent.gradient} rounded-full blur-3xl opacity-30 group-hover:opacity-80 transition-opacity pointer-events-none`} />
@@ -134,34 +135,34 @@ export const Services = ({ services, soundState }) => {
                     <div>
                       {/* Top Bar: Number & Service Icon */}
                       <div className="flex items-center justify-between mb-2 sm:mb-6">
-                        <span className="font-mono text-sm sm:text-4xl font-black text-white/20 group-hover:text-white/50 transition-colors">
+                        <span className="font-mono text-base sm:text-4xl font-black text-white/20 group-hover:text-white/50 transition-colors">
                           {service.id}
                         </span>
-                        <div className={`w-6 h-6 sm:w-12 sm:h-12 rounded-[4px] sm:rounded-[6px] flex items-center justify-center border transition-all duration-300 group-hover:scale-110 shadow-glow-cyan/20 ${accent.badge}`}>
-                          <Icon className="w-3.5 h-3.5 sm:w-6 sm:h-6 stroke-[2.2]" />
+                        <div className={`w-7 h-7 sm:w-12 sm:h-12 rounded-[5px] sm:rounded-[6px] flex items-center justify-center border transition-all duration-300 group-hover:scale-110 shadow-glow-cyan/20 ${accent.badge}`}>
+                          <Icon className="w-4 h-4 sm:w-6 sm:h-6 stroke-[2.2]" />
                         </div>
                       </div>
 
                       {/* Title & Tagline */}
-                      <h3 className="font-heading font-extrabold text-[10px] sm:text-2xl text-white-pure mb-0.5 sm:mb-1.5 group-hover:text-purple-mist transition-colors line-clamp-1 sm:line-clamp-none">
+                      <h3 className="font-heading font-extrabold text-xs sm:text-2xl text-white-pure mb-1 sm:mb-1.5 group-hover:text-purple-mist transition-colors line-clamp-1 sm:line-clamp-none">
                         {service.title}
                       </h3>
-                      <p className="text-[7.5px] sm:text-xs text-cute-pink mb-1 sm:mb-4 font-semibold tracking-wide truncate">
+                      <p className="text-[9px] sm:text-xs text-cute-pink mb-1.5 sm:mb-4 font-semibold tracking-wide truncate">
                         {service.subtitle}
                       </p>
 
-                      <p className="text-white-dim text-[8px] sm:text-sm leading-snug sm:leading-relaxed mb-1.5 sm:mb-6 font-normal line-clamp-2 sm:line-clamp-none">
+                      <p className="text-white-dim text-[9.5px] sm:text-sm leading-snug sm:leading-relaxed mb-2 sm:mb-6 font-normal line-clamp-2 sm:line-clamp-none">
                         {service.description}
                       </p>
 
                       {/* Deliverables List */}
-                      <div className="space-y-1 sm:space-y-2.5 mb-2 sm:mb-6 pt-1.5 sm:pt-4 border-t border-white/10">
-                        <span className="text-[7.5px] sm:text-[11px] uppercase tracking-wider text-purple-mist font-bold block mb-1 sm:mb-3">
+                      <div className="space-y-1.5 sm:space-y-2.5 mb-2 sm:mb-6 pt-2 sm:pt-4 border-t border-white/10">
+                        <span className="text-[8.5px] sm:text-[11px] uppercase tracking-wider text-purple-mist font-bold block mb-1 sm:mb-3">
                           ✦ Deliverables
                         </span>
                         {service.deliverables.slice(0, 3).map((del, i) => (
-                          <div key={i} className="flex items-start gap-1 sm:gap-2.5 text-[7.5px] sm:text-[13px] text-white-crisp font-normal leading-tight line-clamp-1 sm:line-clamp-none">
-                            <CheckCircle2 className="w-2.5 h-2.5 sm:w-4 sm:h-4 shrink-0 mt-0.5" style={{ color: accent.accent }} />
+                          <div key={i} className="flex items-start gap-1.5 sm:gap-2.5 text-[8.5px] sm:text-[13px] text-white-crisp font-normal leading-tight line-clamp-1 sm:line-clamp-none">
+                            <CheckCircle2 className="w-3 h-3 sm:w-4 sm:h-4 shrink-0 mt-0.5" style={{ color: accent.accent }} />
                             <span className="truncate sm:whitespace-normal">{del}</span>
                           </div>
                         ))}
@@ -169,17 +170,17 @@ export const Services = ({ services, soundState }) => {
                     </div>
 
                     {/* Bottom Stat & Action */}
-                    <div className="pt-1.5 sm:pt-4 border-t border-white/10 flex items-center justify-between gap-1">
-                      <span className="text-[6.5px] sm:text-xs font-mono text-white-muted font-medium truncate">
+                    <div className="pt-2 sm:pt-4 border-t border-white/10 flex items-center justify-between gap-1">
+                      <span className="text-[7.5px] sm:text-xs font-mono text-white-muted font-medium truncate">
                         {service.stats}
                       </span>
                       <a
                         href="#contact"
                         onClick={() => playSynthSound?.("click")}
-                        className="inline-flex items-center gap-0.5 sm:gap-1 px-1.5 sm:px-3 py-0.5 sm:py-1 rounded-[3px] sm:rounded-[4px] bg-dark-800/90 hover:bg-purple-deep/40 border border-white/20 hover:border-purple-glow text-white-crisp hover:text-white-pure text-[7px] sm:text-xs font-heading font-semibold transition-all duration-200 shrink-0 select-none shadow-sm"
+                        className="inline-flex items-center gap-1 px-2 sm:px-3 py-0.5 sm:py-1 rounded-[4px] bg-dark-800/90 hover:bg-purple-deep/40 border border-white/20 hover:border-purple-glow text-white-crisp hover:text-white-pure text-[8px] sm:text-xs font-heading font-semibold transition-all duration-200 shrink-0 select-none shadow-sm"
                       >
                         <span>Inquire</span>
-                        <ArrowRight className="w-2 h-2 sm:w-3 sm:h-3" />
+                        <ArrowRight className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
                       </a>
                     </div>
                   </div>
