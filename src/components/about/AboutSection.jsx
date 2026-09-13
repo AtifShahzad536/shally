@@ -1,12 +1,44 @@
-import React from "react";
-import { motion } from "framer-motion";
-import { User, Sparkles, Heart, Coffee, Compass, CheckCircle2, ArrowUpRight } from "lucide-react";
+import React, { useRef } from "react";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { User, Sparkles, Heart, Coffee, Compass, CheckCircle2, ArrowUpRight, Cpu } from "lucide-react";
 import { creativeTools } from "../../data/portfolioData";
+import { ThreeDTiltCard } from "../3d/ThreeDTiltCard";
 import { useCursor } from "../../context/CursorContext";
 
 export const AboutSection = ({ soundState, aboutData = {} }) => {
   const { playSynthSound } = soundState;
   const { setCursor } = useCursor();
+  const sectionRef = useRef(null);
+
+  // 3D Scroll Parallax Fly-in Assembly
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"]
+  });
+
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 75,
+    damping: 22,
+    restDelta: 0.001
+  });
+
+  // Left Portrait Flies from Left with 3D Y-Rotation
+  const portraitX = useTransform(smoothProgress, [0.1, 0.45, 0.85], [-350, 0, -100]);
+  const portraitRotateY = useTransform(smoothProgress, [0.1, 0.45, 0.85], [35, 0, 15]);
+  const portraitZ = useTransform(smoothProgress, [0.1, 0.45, 0.85], [-250, 35, -80]);
+  const portraitOpacity = useTransform(smoothProgress, [0.08, 0.35], [0, 1]);
+
+  // Right Story Flies from Right
+  const storyX = useTransform(smoothProgress, [0.1, 0.45, 0.85], [350, 0, 100]);
+  const storyRotateY = useTransform(smoothProgress, [0.1, 0.45, 0.85], [-35, 0, -15]);
+  const storyZ = useTransform(smoothProgress, [0.1, 0.45, 0.85], [-250, 35, -80]);
+  const storyOpacity = useTransform(smoothProgress, [0.08, 0.35], [0, 1]);
+
+  // Bottom Arsenal flies from bottom with 3D X-tilt
+  const arsenalY = useTransform(smoothProgress, [0.2, 0.55, 0.9], [250, 0, 100]);
+  const arsenalRotateX = useTransform(smoothProgress, [0.2, 0.55, 0.9], [35, 0, 15]);
+  const arsenalZ = useTransform(smoothProgress, [0.2, 0.55, 0.9], [-200, 20, -50]);
+  const arsenalOpacity = useTransform(smoothProgress, [0.15, 0.45], [0, 1]);
 
   const data = {
     badgeText: aboutData.badgeText || "BEHIND THE CREATIVE VISION",
@@ -38,77 +70,98 @@ export const AboutSection = ({ soundState, aboutData = {} }) => {
   ];
 
   return (
-    <section id="about" className="relative py-28 bg-dark-950/90 overflow-hidden">
-      
+    <section 
+      ref={sectionRef}
+      id="about" 
+      className="relative py-32 bg-dark-950/90 overflow-hidden select-none"
+      style={{ perspective: "1500px" }}
+    >
       {/* Background Lighting */}
       <div className="absolute top-1/3 -left-[10%] w-[45vw] h-[45vw] rounded-full bg-purple-glow/15 blur-[140px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header */}
-        <div className="mb-16">
+        <div className="mb-20">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-[5px] bg-purple-deep/20 border border-purple-glow/30 text-purple-soft text-xs font-mono font-medium mb-3">
             <User className="w-3.5 h-3.5 text-purple-glow" />
             <span>{data.badgeText}</span>
           </div>
-          <h2 className="font-heading font-extrabold text-3xl sm:text-5xl text-white-pure tracking-tight">
+          <h2 className="font-heading font-black text-3xl sm:text-5xl lg:text-6xl text-white-pure tracking-tight">
             {data.headlinePrefix} <span className="text-gradient-cute">{data.headlineName}</span> {data.headlineSuffix}
           </h2>
         </div>
 
         {/* ============================================================ */}
-        {/* CREATIVE PROFILE COMPOSITION */}
+        {/* CREATIVE PROFILE 3D SPATIAL COMPOSITION */}
         {/* ============================================================ */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center mb-20">
+        <div 
+          className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mb-24"
+          style={{ transformStyle: "preserve-3d" }}
+        >
           
-          {/* Left: Creative Portrait & Badge Stack (5 Cols) */}
-          <div className="lg:col-span-5 relative">
-            
+          {/* Left: Creative Portrait & Badge Stack (Flying in from Left) */}
+          <motion.div 
+            style={{
+              x: portraitX,
+              z: portraitZ,
+              rotateY: portraitRotateY,
+              opacity: portraitOpacity,
+              transformStyle: "preserve-3d"
+            }}
+            className="lg:col-span-5 relative"
+          >
             {/* Ambient Background Box */}
-            <div className="absolute inset-0 bg-gradient-to-tr from-purple-deep/40 to-cyan-neon/30 rounded-[5px] filter blur-xl -z-10" />
+            <div className="absolute inset-0 bg-gradient-to-tr from-purple-deep/40 to-cyan-neon/30 rounded-[8px] filter blur-xl -z-10" />
 
-            <div className="glass-panel p-3 rounded-[5px] border border-white/20 bg-dark-900/90 shadow-2xl relative">
-              {/* Portrait Frame */}
-              <div className="relative aspect-[4/5] rounded-[4px] overflow-hidden bg-black">
-                <img
-                  src={data.portraitImage}
-                  alt={data.headlineName}
-                  className="w-full h-full object-cover grayscale contrast-125 hover:grayscale-0 transition-all duration-700"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-dark-950/90 via-transparent to-transparent" />
+            <ThreeDTiltCard maxTilt={12}>
+              <div className="glass-panel p-3.5 rounded-[8px] border border-white/20 bg-dark-900/95 shadow-2xl relative">
+                {/* Portrait Frame */}
+                <div className="relative aspect-[4/5] rounded-[6px] overflow-hidden bg-black">
+                  <img
+                    src={data.portraitImage}
+                    alt={data.headlineName}
+                    className="w-full h-full object-cover grayscale contrast-125 hover:grayscale-0 transition-all duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-dark-950/90 via-transparent to-transparent" />
 
-                {/* Live Creative Status Pill */}
-                <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between font-mono text-xs">
-                  <div className="bg-dark-950/80 backdrop-blur-md px-3 py-1 rounded-[3px] border border-white/10 text-purple-mist flex items-center gap-1.5">
-                    <Sparkles className="w-3.5 h-3.5 text-cute-pink" />
-                    <span>{data.statusBadge}</span>
+                  {/* Live Creative Status Pill */}
+                  <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between font-mono text-xs">
+                    <div className="bg-dark-950/80 backdrop-blur-md px-3 py-1 rounded-[3px] border border-white/10 text-purple-mist flex items-center gap-1.5">
+                      <Sparkles className="w-3.5 h-3.5 text-cute-pink" />
+                      <span>{data.statusBadge}</span>
+                    </div>
+                    <span className="bg-cyan-deep/80 text-cyan-ice px-2 py-0.5 rounded-[3px] font-bold">
+                      {data.timezone}
+                    </span>
                   </div>
-                  <span className="bg-cyan-deep/80 text-cyan-ice px-2 py-0.5 rounded-[3px] font-bold">
-                    {data.timezone}
-                  </span>
                 </div>
               </div>
-            </div>
+            </ThreeDTiltCard>
 
-            {/* Floating Personality Pill 1 */}
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="absolute -bottom-6 -right-4 sm:-right-8 z-20 glass-panel p-3.5 rounded-[5px] border border-cute-pink/40 shadow-glow-pink/20 bg-dark-900/95 flex items-center gap-2.5"
-            >
-              <div className="w-8 h-8 rounded-[4px] bg-cute-pink/20 text-cute-pink flex items-center justify-center font-bold">
+            {/* Floating Personality Pill */}
+            <div className="absolute -bottom-6 -right-4 sm:-right-8 z-20 glass-panel p-3.5 rounded-[6px] border border-cute-pink/40 shadow-glow-pink/30 bg-dark-900/95 flex items-center gap-2.5">
+              <div className="w-9 h-9 rounded-[5px] bg-cute-pink/20 text-cute-pink flex items-center justify-center font-bold">
                 <Coffee className="w-4 h-4" />
               </div>
               <div>
                 <p className="font-heading text-xs font-bold text-white-pure">{data.hobbyTitle}</p>
                 <p className="font-mono text-[9px] text-cute-pink">{data.hobbySub}</p>
               </div>
-            </motion.div>
-          </div>
+            </div>
+          </motion.div>
 
-          {/* Right: Narrative Story & Creative Pillars (7 Cols) */}
-          <div className="lg:col-span-7 flex flex-col justify-between">
+          {/* Right: Narrative Story & Creative Pillars (Flying in from Right) */}
+          <motion.div 
+            style={{
+              x: storyX,
+              z: storyZ,
+              rotateY: storyRotateY,
+              opacity: storyOpacity,
+              transformStyle: "preserve-3d"
+            }}
+            className="lg:col-span-7 flex flex-col justify-between"
+          >
             <div className="space-y-4 text-white-dim text-base sm:text-lg leading-relaxed mb-8">
               <p>{data.bioParagraph1}</p>
               <p>{data.bioParagraph2}</p>
@@ -117,7 +170,7 @@ export const AboutSection = ({ soundState, aboutData = {} }) => {
             {/* Creative Pillars (3 Box Grid) */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
               {creativePillars.map((p, i) => (
-                <div key={i} className="glass-panel p-4 rounded-[5px] border border-white/10 bg-dark-900/70">
+                <div key={i} className="glass-panel p-4 rounded-[6px] border border-white/15 bg-dark-900/80 shadow-lg">
                   <span className="text-xs text-cyan-neon font-bold block mb-1">
                     Pillar 0{i + 1}
                   </span>
@@ -142,13 +195,22 @@ export const AboutSection = ({ soundState, aboutData = {} }) => {
                 {data.stat3}
               </span>
             </div>
-          </div>
+          </motion.div>
         </div>
 
         {/* ============================================================ */}
-        {/* SHALLY'S INTERACTIVE TOOLBOX & ARSENAL */}
+        {/* SHALLY'S 3D INTERACTIVE PRODUCTION ARSENAL */}
         {/* ============================================================ */}
-        <div className="glass-panel p-6 sm:p-8 rounded-[5px] border border-white/15 bg-dark-900/90">
+        <motion.div 
+          style={{
+            y: arsenalY,
+            z: arsenalZ,
+            rotateX: arsenalRotateX,
+            opacity: arsenalOpacity,
+            transformStyle: "preserve-3d"
+          }}
+          className="glass-panel p-6 sm:p-8 rounded-[8px] border border-white/20 bg-dark-900/95 shadow-2xl"
+        >
           <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-white/10 mb-6">
             <div>
               <span className="text-xs uppercase tracking-wider text-purple-mist font-bold block mb-1">
@@ -158,7 +220,7 @@ export const AboutSection = ({ soundState, aboutData = {} }) => {
                 Software, Tools & Ecosystems I Master Daily
               </h3>
             </div>
-            <span className="text-xs text-cyan-neon mt-2 sm:mt-0 font-bold">
+            <span className="text-xs font-mono text-cyan-neon mt-2 sm:mt-0 font-bold bg-cyan-deep/30 px-2.5 py-1 rounded-[3px] border border-cyan-neon/30">
               10+ Specialized Workflows
             </span>
           </div>
@@ -172,7 +234,7 @@ export const AboutSection = ({ soundState, aboutData = {} }) => {
                   playSynthSound("hover");
                 }}
                 onMouseLeave={() => setCursor("default")}
-                className="p-3 rounded-[5px] bg-dark-950/80 border border-white/10 hover:border-purple-glow/50 transition-all flex flex-col justify-between group"
+                className="p-3.5 rounded-[5px] bg-dark-950/80 border border-white/10 hover:border-purple-glow/60 transition-all flex flex-col justify-between group shadow-inner"
               >
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-xl group-hover:scale-110 transition-transform">{tool.icon}</span>
@@ -189,7 +251,7 @@ export const AboutSection = ({ soundState, aboutData = {} }) => {
               </div>
             ))}
           </div>
-        </div>
+        </motion.div>
 
       </div>
     </section>

@@ -1,13 +1,39 @@
-import React, { useState } from "react";
-import { motion } from "framer-motion";
-import { Sparkles, PenTool, Film, ArrowRight, CheckCircle2, ChevronDown } from "lucide-react";
+import React, { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { Sparkles, PenTool, Film, ArrowRight, CheckCircle2, Shield, Lock, Unlock, Zap } from "lucide-react";
 import { MagneticButton } from "../common/MagneticButton";
+import { ThreeDTiltCard } from "../3d/ThreeDTiltCard";
 import { useCursor } from "../../context/CursorContext";
 
 export const Services = ({ services, soundState }) => {
-  const { playSynthSound } = soundState;
+  const { playSynthSound } = soundState || { playSynthSound: () => {} };
   const { setCursor } = useCursor();
-  const [expandedService, setExpandedService] = useState(null);
+  const sectionRef = useRef(null);
+
+  // Direct zero-lag scroll tracking synced with Lenis
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"]
+  });
+
+  // 1. LEFT VAULT BLAST DOOR: Slides Left & Swings Outward in 3D
+  const leftDoorX = useTransform(scrollYProgress, [0.15, 0.45], ["0%", "-105%"]);
+  const leftDoorRotateY = useTransform(scrollYProgress, [0.15, 0.45], [0, -35]);
+  const leftDoorZ = useTransform(scrollYProgress, [0.15, 0.45], [0, 80]);
+
+  // 2. RIGHT VAULT BLAST DOOR: Slides Right & Swings Outward in 3D
+  const rightDoorX = useTransform(scrollYProgress, [0.15, 0.45], ["0%", "105%"]);
+  const rightDoorRotateY = useTransform(scrollYProgress, [0.15, 0.45], [0, 35]);
+  const rightDoorZ = useTransform(scrollYProgress, [0.15, 0.45], [0, 80]);
+
+  // 3. Central Vault Core Glow & Reveal
+  const coreScale = useTransform(scrollYProgress, [0.2, 0.5, 0.85], [0.8, 1, 0.95]);
+  const coreZ = useTransform(scrollYProgress, [0.2, 0.5, 0.85], [-350, 40, -100]);
+  const coreOpacity = useTransform(scrollYProgress, [0.15, 0.4], [0.3, 1]);
+
+  // Status Indicator on Doors
+  const lockOpacity = useTransform(scrollYProgress, [0.1, 0.25], [1, 0]);
+  const unlockOpacity = useTransform(scrollYProgress, [0.25, 0.45], [0, 1]);
 
   const iconMap = {
     Sparkles: Sparkles,
@@ -17,129 +43,217 @@ export const Services = ({ services, soundState }) => {
 
   const serviceAccents = {
     "01": {
-      gradient: "from-purple-deep/30 via-purple-electric/20 to-transparent",
-      badge: "border-purple-glow/40 text-purple-soft bg-purple-deep/20",
+      gradient: "from-purple-deep/40 via-purple-electric/20 to-transparent",
+      badge: "border-purple-glow/50 text-purple-soft bg-purple-deep/30",
       accent: "#A855F7",
-      hoverBorder: "hover:border-purple-glow",
-      image: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=600&q=80"
+      hoverBorder: "hover:border-purple-glow"
     },
     "02": {
-      gradient: "from-cute-pink/25 via-purple-deep/20 to-transparent",
-      badge: "border-cute-pink/40 text-cute-pink bg-cute-pink/20",
+      gradient: "from-cute-pink/35 via-purple-deep/20 to-transparent",
+      badge: "border-cute-pink/50 text-cute-pink bg-cute-pink/30",
       accent: "#F472B6",
-      hoverBorder: "hover:border-cute-pink",
-      image: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=600&q=80"
+      hoverBorder: "hover:border-cute-pink"
     },
     "03": {
-      gradient: "from-cyan-deep/30 via-cyan-neon/20 to-transparent",
-      badge: "border-cyan-neon/40 text-cyan-neon bg-cyan-deep/20",
+      gradient: "from-cyan-deep/40 via-cyan-neon/20 to-transparent",
+      badge: "border-cyan-neon/50 text-cyan-neon bg-cyan-deep/30",
       accent: "#00E5FF",
-      hoverBorder: "hover:border-cyan-neon",
-      image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80"
+      hoverBorder: "hover:border-cyan-neon"
     }
   };
 
   return (
-    <section id="services" className="relative py-28 bg-dark-950 overflow-hidden">
-
-      {/* Background Lighting */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[500px] rounded-full bg-purple-glow/10 blur-[160px] pointer-events-none" />
+    <section 
+      ref={sectionRef} 
+      id="services" 
+      className="relative min-h-[130vh] py-32 bg-dark-950 overflow-hidden select-none"
+      style={{ perspective: "1600px" }}
+    >
+      {/* Background Cyber Laser Lines & Atmospheric Fog */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(168,85,247,0.12)_0%,transparent_70%)] pointer-events-none" />
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[85vw] h-[550px] rounded-full bg-cyan-neon/10 blur-[170px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-[5px] bg-purple-deep/20 border border-purple-glow/30 text-purple-soft text-xs font-mono font-medium mb-3">
-              <Sparkles className="w-3.5 h-3.5 text-purple-glow" />
-              <span>CORE CAPABILITIES</span>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-[5px] bg-purple-deep/25 border border-purple-glow/40 text-purple-soft text-xs font-mono font-medium mb-3 shadow-glow-purple/20">
+              <Zap className="w-3.5 h-3.5 text-cyan-neon animate-pulse" />
+              <span>3D CYBER VAULT // DISCIPLINE ARCHIVES</span>
             </div>
-            <h2 className="font-heading font-extrabold text-3xl sm:text-5xl text-white-pure tracking-tight">
+            <h2 className="font-heading font-black text-3xl sm:text-5xl lg:text-6xl text-white-pure tracking-tight">
               Three Disciplines. <span className="text-gradient-purple-cyan">One Vision.</span>
             </h2>
           </div>
-          <p className="text-white-dim text-sm max-w-md mt-4 md:mt-0 font-normal">
-            Specialized creative services designed to elevate brand authority, capture cultural attention, and convert audience curiosity into tangible revenue.
-          </p>
+          <div className="mt-4 md:mt-0 font-mono text-xs text-white-dim flex items-center gap-3">
+            <span className="w-2.5 h-2.5 rounded-full bg-cyan-neon animate-ping" />
+            <span>Scroll down to disengage 3D Blast Doors & Unlock Capabilities</span>
+          </div>
         </div>
 
-        {/* 3 Pillars Card Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {services.map((service) => {
-            const Icon = iconMap[service.icon] || Sparkles;
-            const accent = serviceAccents[service.id] || serviceAccents["01"];
-            const isExpanded = expandedService === service.id;
+        {/* ========================================================================= */}
+        {/* THE 3D SCI-FI BLAST DOOR PORTAL MECHANISM */}
+        {/* ========================================================================= */}
+        <div 
+          className="relative w-full min-h-[680px] flex items-center justify-center overflow-hidden rounded-[10px] p-2 sm:p-4 border border-white/10 bg-dark-950/60 shadow-[0_20px_70px_rgba(0,0,0,0.9)]"
+          style={{ transformStyle: "preserve-3d" }}
+        >
+          {/* Inner Reveal Stage (3 Services Cores inside Vault) */}
+          <motion.div
+            style={{
+              scale: coreScale,
+              z: coreZ,
+              opacity: coreOpacity,
+              transformStyle: "preserve-3d"
+            }}
+            className="w-full grid grid-cols-1 lg:grid-cols-3 gap-6 z-10"
+          >
+            {services.map((service) => {
+              const Icon = iconMap[service.icon] || Sparkles;
+              const accent = serviceAccents[service.id] || serviceAccents["01"];
 
-            return (
-              <motion.div
-                key={service.id}
-                whileHover={{ y: -8 }}
-                transition={{ duration: 0.35, ease: "easeOut" }}
-                onMouseEnter={() => {
-                  setCursor("hover", "EXPLORE");
-                  playSynthSound("hover");
-                }}
-                onMouseLeave={() => setCursor("default")}
-                className={`glass-panel p-6 sm:p-7 rounded-[5px] border border-white/15 bg-dark-900/90 flex flex-col justify-between relative group transition-all duration-500 overflow-hidden ${accent.hoverBorder}`}
-              >
-                {/* Background Card Ambient Glow */}
-                <div className={`absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl ${accent.gradient} rounded-full blur-3xl opacity-30 group-hover:opacity-80 transition-opacity pointer-events-none`} />
+              return (
+                <ThreeDTiltCard
+                  key={service.id}
+                  maxTilt={12}
+                  scale={1.02}
+                  className="h-full"
+                >
+                  <div
+                    onMouseEnter={() => {
+                      setCursor("hover", "INSPECT CORE");
+                      playSynthSound("hover");
+                    }}
+                    onMouseLeave={() => setCursor("default")}
+                    className={`glass-panel p-6 sm:p-7 rounded-[8px] border border-white/20 bg-dark-900/95 flex flex-col justify-between relative group transition-all duration-500 overflow-hidden h-full ${accent.hoverBorder} shadow-2xl hover:shadow-[0_25px_60px_rgba(168,85,247,0.3)]`}
+                  >
+                    {/* Background Card Ambient Glow */}
+                    <div className={`absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl ${accent.gradient} rounded-full blur-3xl opacity-30 group-hover:opacity-80 transition-opacity pointer-events-none`} />
 
-                <div>
-                  {/* Top Bar: Number & Service Icon */}
-                  <div className="flex items-center justify-between mb-6">
-                    <span className="font-mono text-3xl sm:text-4xl font-black text-white/20 group-hover:text-white/40 transition-colors">
-                      {service.id}
-                    </span>
-                    <div className={`w-11 h-11 rounded-[5px] flex items-center justify-center border transition-all duration-300 group-hover:scale-110 ${accent.badge}`}>
-                      <Icon className="w-5 h-5 stroke-[2.2]" />
+                    <div>
+                      {/* Top Bar: Number & Service Icon */}
+                      <div className="flex items-center justify-between mb-6">
+                        <span className="font-mono text-3xl sm:text-4xl font-black text-white/20 group-hover:text-white/50 transition-colors">
+                          {service.id}
+                        </span>
+                        <div className={`w-12 h-12 rounded-[6px] flex items-center justify-center border transition-all duration-300 group-hover:scale-110 shadow-glow-cyan/20 ${accent.badge}`}>
+                          <Icon className="w-6 h-6 stroke-[2.2]" />
+                        </div>
+                      </div>
+
+                      {/* Title & Tagline */}
+                      <h3 className="font-heading font-extrabold text-xl sm:text-2xl text-white-pure mb-1.5 group-hover:text-purple-mist transition-colors">
+                        {service.title}
+                      </h3>
+                      <p className="text-xs text-cute-pink mb-4 font-semibold tracking-wide">
+                        {service.subtitle}
+                      </p>
+
+                      <p className="text-white-dim text-xs sm:text-sm leading-relaxed mb-6 font-normal">
+                        {service.description}
+                      </p>
+
+                      {/* Deliverables List */}
+                      <div className="space-y-2.5 mb-6 pt-4 border-t border-white/10">
+                        <span className="text-[11px] uppercase tracking-wider text-purple-mist font-bold block mb-3">
+                          ✦ Key Deliverables & Scope
+                        </span>
+                        {service.deliverables.map((del, i) => (
+                          <div key={i} className="flex items-start gap-2.5 text-xs sm:text-[13px] text-white-crisp font-normal leading-snug">
+                            <CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5" style={{ color: accent.accent }} />
+                            <span>{del}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Bottom Stat & Action */}
+                    <div className="pt-4 border-t border-white/10 flex items-center justify-between">
+                      <span className="text-xs font-mono text-white-muted font-medium">
+                        {service.stats}
+                      </span>
+                      <MagneticButton
+                        href="#contact"
+                        onClick={() => playSynthSound("click")}
+                        variant="outline"
+                        className="text-xs px-3.5 py-1.5 font-medium"
+                      >
+                        <span>Inquire</span>
+                        <ArrowRight className="w-3 h-3" />
+                      </MagneticButton>
                     </div>
                   </div>
+                </ThreeDTiltCard>
+              );
+            })}
+          </motion.div>
 
-                  {/* Title & Tagline */}
-                  <h3 className="font-heading font-extrabold text-xl sm:text-2xl text-white-pure mb-1.5 group-hover:text-purple-mist transition-colors">
-                    {service.title}
-                  </h3>
-                  <p className="text-xs text-cute-pink mb-4 font-semibold tracking-wide">
-                    {service.subtitle}
-                  </p>
+          {/* ========================================================= */}
+          {/* THE 3D SLIDING BLAST DOOR PANELS (Open on Scroll) */}
+          {/* ========================================================= */}
 
-                  <p className="text-white-dim text-xs sm:text-sm leading-relaxed mb-6 font-normal">
-                    {service.description}
-                  </p>
+          {/* Left Blast Door Panel */}
+          <motion.div
+            style={{
+              x: leftDoorX,
+              rotateY: leftDoorRotateY,
+              z: leftDoorZ,
+              transformStyle: "preserve-3d"
+            }}
+            className="absolute top-0 bottom-0 left-0 w-1/2 bg-gradient-to-r from-dark-950 via-dark-900 to-dark-850 border-r-2 border-cyan-neon/60 z-30 shadow-[15px_0_40px_rgba(0,0,0,0.9)] p-6 flex flex-col justify-between pointer-events-none"
+          >
+            <div className="flex items-center justify-between border-b border-white/15 pb-4">
+              <span className="font-mono text-xs text-cyan-neon font-black tracking-widest uppercase flex items-center gap-2">
+                <Shield className="w-4 h-4 text-cyan-neon" /> VAULT_DOOR_01 // LEFT
+              </span>
+              <span className="font-mono text-[10px] text-white-muted">HYDRAULIC-LOCK</span>
+            </div>
 
-                  {/* Deliverables List */}
-                  <div className="space-y-2.5 mb-6 pt-4 border-t border-white/10">
-                    <span className="text-[11px] uppercase tracking-wider text-purple-mist font-bold block mb-3">
-                      ✦ Key Deliverables & Scope
-                    </span>
-                    {service.deliverables.map((del, i) => (
-                      <div key={i} className="flex items-start gap-2.5 text-xs sm:text-[13px] text-white-crisp font-normal leading-snug">
-                        <CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5" style={{ color: accent.accent }} />
-                        <span>{del}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Bottom Stat & Action */}
-                <div className="pt-4 border-t border-white/10 flex items-center justify-between">
-                  <span className="text-xs text-white-muted font-medium">
-                    {service.stats}
-                  </span>
-                  <MagneticButton
-                    href="#contact"
-                    onClick={() => playSynthSound("click")}
-                    variant="outline"
-                    className="text-xs px-3.5 py-1.5 font-medium"
-                  >
-                    <span>Inquire</span>
-                    <ArrowRight className="w-3 h-3" />
-                  </MagneticButton>
-                </div>
+            <div className="self-end my-auto -mr-12 w-24 h-24 rounded-full border-4 border-cyan-neon/80 bg-dark-950 flex items-center justify-center shadow-glow-cyan">
+              <motion.div style={{ opacity: lockOpacity }} className="flex flex-col items-center">
+                <Lock className="w-6 h-6 text-rose-500" />
+                <span className="text-[8px] font-mono text-rose-400 font-bold mt-1">SEALED</span>
               </motion.div>
-            );
-          })}
+              <motion.div style={{ opacity: unlockOpacity }} className="absolute flex flex-col items-center">
+                <Unlock className="w-6 h-6 text-emerald-400" />
+                <span className="text-[8px] font-mono text-emerald-400 font-bold mt-1">OPEN</span>
+              </motion.div>
+            </div>
+
+            <div className="border-t border-white/15 pt-4 flex items-center justify-between text-[10px] font-mono text-white-muted">
+              <span>SECURITY LEVEL: ALPHA</span>
+              <span className="text-cyan-neon font-bold">SCROLL TO OPEN ➔</span>
+            </div>
+          </motion.div>
+
+          {/* Right Blast Door Panel */}
+          <motion.div
+            style={{
+              x: rightDoorX,
+              rotateY: rightDoorRotateY,
+              z: rightDoorZ,
+              transformStyle: "preserve-3d"
+            }}
+            className="absolute top-0 bottom-0 right-0 w-1/2 bg-gradient-to-l from-dark-950 via-dark-900 to-dark-850 border-l-2 border-purple-glow/60 z-30 shadow-[-15px_0_40px_rgba(0,0,0,0.9)] p-6 flex flex-col justify-between pointer-events-none"
+          >
+            <div className="flex items-center justify-between border-b border-white/15 pb-4">
+              <span className="font-mono text-[10px] text-white-muted">HYDRAULIC-LOCK</span>
+              <span className="font-mono text-xs text-purple-mist font-black tracking-widest uppercase flex items-center gap-2">
+                VAULT_DOOR_02 // RIGHT <Shield className="w-4 h-4 text-purple-glow" />
+              </span>
+            </div>
+
+            <div className="self-start my-auto -ml-12 w-24 h-24 rounded-full border-4 border-purple-glow/80 bg-dark-950 flex items-center justify-center shadow-glow-purple">
+              <Sparkles className="w-6 h-6 text-cyan-neon animate-spin" />
+            </div>
+
+            <div className="border-t border-white/15 pt-4 flex items-center justify-between text-[10px] font-mono text-white-muted">
+              <span className="text-purple-mist font-bold">DISENGAGING LOCKS</span>
+              <span>PRESSURE: NOMINAL</span>
+            </div>
+          </motion.div>
+
         </div>
 
       </div>

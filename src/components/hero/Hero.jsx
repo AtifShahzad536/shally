@@ -1,268 +1,208 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Sparkles, ArrowRight, Film, PenTool, CheckCircle2 } from "lucide-react";
-import { FaInstagram } from "react-icons/fa6";
+import { ArrowRight, Sparkles } from "lucide-react";
 import { MagneticButton } from "../common/MagneticButton";
-import { useCursor } from "../../context/CursorContext";
+import { HeroAncientTree } from "../3d/HeroAncientTree";
 
 export const Hero = ({ soundState, heroData = {} }) => {
-  const { playSynthSound } = soundState;
-  const { setCursor } = useCursor();
+  const { playSynthSound } = soundState || { playSynthSound: () => {} };
 
   // Dynamic CMS Fallback
   const data = {
-    availabilityText: heroData.availabilityText || "Available for Select Brand Collaborations & Retainers",
-    isAvailable: heroData.isAvailable ?? true,
-    titleGreeting: heroData.titleGreeting || "Hi, I'm",
-    titleName: heroData.titleName || "Shally",
-    titleLine2: heroData.titleLine2 || "Creative Content &",
-    titleLine3: heroData.titleLine3 || "Digital Experiences",
-    description: heroData.description || "Blending magnetic Social Media Marketing, conversion-focused Editorial Copywriting, and high-energy Cinematic Video Editing to make modern brands impossible to ignore.",
-    chip1: heroData.chip1 || "Social Media Growth",
-    chip2: heroData.chip2 || "Editorial Copywriting",
-    chip3: heroData.chip3 || "Short-Form Video Production",
+    titleGreeting: heroData.titleGreeting || "ENGINEERING",
+    titleName: heroData.titleName || "VIRAL REALITIES",
     previewImage: heroData.previewImage || "/shally.png",
     stat1Val: heroData.stat1Val || "18M+",
-    stat1Label: heroData.stat1Label || "Organic Video Views",
+    stat1Label: heroData.stat1Label || "Organic Views",
     stat2Val: heroData.stat2Val || "+340%",
-    stat2Label: heroData.stat2Label || "Avg Client Social Lift",
+    stat2Label: heroData.stat2Label || "Social Growth",
     stat3Val: heroData.stat3Val || "46.2%",
-    stat3Label: heroData.stat3Label || "Email Open Rate Record",
+    stat3Label: heroData.stat3Label || "Retention Rate",
     stat4Val: heroData.stat4Val || "99.8%",
-    stat4Label: heroData.stat4Label || "Client Satisfaction"
+    stat4Label: heroData.stat4Label || "Satisfaction"
   };
 
   return (
-    <section id="hero" className="relative min-h-screen pt-32 pb-20 flex flex-col justify-center overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
+    <section id="hero" className="relative min-h-screen pt-24 pb-16 flex flex-col justify-center items-center text-center overflow-hidden select-none">
+      
+      {/* Background Ambient Celestial Glow */}
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] h-[600px] rounded-full bg-gradient-to-tr from-purple-glow/20 via-cyan-neon/15 to-cute-pink/20 blur-[180px] pointer-events-none" />
+
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10 flex flex-col items-center">
         
-        {/* Availability Badge */}
-        {data.isAvailable && (
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
-            className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-[5px] bg-dark-850/80 border border-purple-glow/30 backdrop-blur-md mb-6 shadow-[0_0_20px_rgba(168,85,247,0.15)]"
-          >
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-neon opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-neon"></span>
-            </span>
-            <span className="text-xs text-purple-mist uppercase tracking-wider font-semibold">
-              {data.availabilityText}
-            </span>
-          </motion.div>
-        )}
+        {/* Ancient Sacred Tree Subtitle */}
+        <motion.div
+          initial={{ opacity: 0, y: -20, scale: 0.9 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-purple-950/40 border border-purple-glow/30 text-purple-soft text-xs font-semibold mb-4 backdrop-blur-md shadow-sm"
+        >
+          <Sparkles className="w-3.5 h-3.5 text-cyan-neon" />
+          <span>Ancient Tree of Digital Storytelling</span>
+        </motion.div>
 
-        {/* Main Grid: Headline & Interactive Composition */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        {/* Kinetic Falling Letters Headline (Drop down from top with spring physics) */}
+        <h1 className="font-heading font-black tracking-tight text-4xl sm:text-6xl md:text-7xl lg:text-8xl leading-[1.05] max-w-4xl mb-4 text-white-pure flex flex-wrap items-center justify-center gap-x-3 sm:gap-x-4">
           
-          {/* Left Hero Content (7 Cols) */}
-          <div className="lg:col-span-7 flex flex-col items-start">
-            
-            <motion.h1
-              initial={{ opacity: 0, y: 18 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.45, delay: 0.1 }}
-              className="font-heading font-black tracking-tight text-3xl sm:text-4xl lg:text-5xl leading-[1.15] mb-4 text-white-pure"
-            >
-              {data.titleGreeting} <span className="text-gradient-purple-cyan">{data.titleName}</span>.
-              <span className="block text-white-crisp text-2xl sm:text-3xl lg:text-4xl font-bold mt-1.5">
-                {data.titleLine2} <span className="text-gradient-cute">{data.titleLine3}</span>
-              </span>
-            </motion.h1>
-
-            <motion.p
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.15 }}
-              className="text-white-dim text-sm sm:text-base max-w-lg font-normal leading-relaxed mb-6"
-            >
-              {data.description}
-            </motion.p>
-
-            {/* Specialties Chips */}
-            <motion.div
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.2 }}
-              className="flex flex-wrap gap-2 mb-8"
-            >
-              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[5px] bg-purple-deep/20 border border-purple-glow/30 text-purple-soft text-xs font-medium">
-                <Sparkles className="w-3.5 h-3.5 text-purple-glow" />
-                {data.chip1}
-              </span>
-              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[5px] bg-cute-pink/15 border border-cute-pink/30 text-cute-pink text-xs font-medium">
-                <PenTool className="w-3.5 h-3.5 text-cute-pink" />
-                {data.chip2}
-              </span>
-              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[5px] bg-cyan-neon/15 border border-cyan-neon/30 text-cyan-neon text-xs font-medium">
-                <Film className="w-3.5 h-3.5 text-cyan-neon" />
-                {data.chip3}
-              </span>
-            </motion.div>
-
-            {/* CTAs */}
-            <motion.div
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.25 }}
-              className="flex flex-wrap items-center gap-3.5"
-            >
-              <MagneticButton
-                href="#work"
-                onClick={() => playSynthSound("click")}
-                variant="primary"
-                className="text-xs sm:text-sm px-6 py-3"
-              >
-                <span>View My Work</span>
-                <ArrowRight className="w-4 h-4" />
-              </MagneticButton>
-
-              <MagneticButton
-                href="#contact"
-                onClick={() => playSynthSound("click")}
-                variant="secondary"
-                className="text-xs sm:text-sm px-5 py-3"
-              >
-                <span>Let's Work Together</span>
-              </MagneticButton>
-            </motion.div>
-          </div>
-
-          {/* Right Floating Visual Composition (5 Cols) */}
-          <div className="lg:col-span-5 relative mt-10 lg:mt-0 flex items-center justify-center">
-            
-            {/* Surrounding Ambient Radial Light Rays & Aura Halo */}
-            <div className="absolute w-[320px] sm:w-[420px] h-[320px] sm:h-[420px] rounded-full -z-10 flex items-center justify-center pointer-events-none">
-              {/* Rotating Conic Light Rays */}
-              <div 
-                className="absolute inset-0 rounded-full opacity-70 animate-spin-slow"
-                style={{
-                  background: "conic-gradient(from 0deg at 50% 50%, rgba(168, 85, 247, 0.5) 0deg, rgba(0, 229, 255, 0.45) 60deg, transparent 120deg, rgba(244, 114, 182, 0.5) 180deg, rgba(0, 229, 255, 0.45) 240deg, transparent 300deg, rgba(168, 85, 247, 0.5) 360deg)",
-                  filter: "blur(40px)"
+          {/* Greeting Word with Falling Letters */}
+          <span className="inline-flex overflow-hidden">
+            {(data.titleGreeting || "Hi, I'm").split("").map((char, index) => (
+              <motion.span
+                key={`greet-${index}`}
+                initial={{ opacity: 0, y: -80, rotateX: 90 }}
+                animate={{ opacity: 1, y: 0, rotateX: 0 }}
+                transition={{
+                  type: "spring",
+                  damping: 12,
+                  stiffness: 140,
+                  delay: index * 0.04
                 }}
-              />
-              
-              {/* Pulsing Core Aura Glow */}
-              <div className="absolute w-64 h-64 rounded-full bg-gradient-to-tr from-purple-glow/45 via-cyan-neon/35 to-cute-pink/45 blur-3xl animate-pulse" />
-              
-              {/* Subtle Neon Ring */}
-              <div className="absolute inset-4 rounded-full border border-purple-glow/30 opacity-40 shadow-[0_0_40px_rgba(168,85,247,0.35)]" />
-            </div>
-
-            {/* 3D Floating Portrait Container with Realistic 3D Cast Shadow */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="relative z-10 w-full max-w-[340px] sm:max-w-[380px] aspect-square flex items-center justify-center"
-            >
-              {/* 3D Depth Floor Shadow Under Avatar */}
-              <div className="absolute -bottom-4 w-3/4 h-8 bg-black/90 rounded-full blur-xl pointer-events-none transform scale-y-50" />
-              
-              {/* Avatar Portrait with Multi-Layered 3D Cast Shadows & Back Rim Glow */}
-              <div className="relative w-full h-full p-2 flex items-center justify-center">
-                <img
-                  src={data.previewImage || "/shally.png"}
-                  alt="Shally — Creative Professional"
-                  style={{
-                    filter: "drop-shadow(0 30px 45px rgba(0,0,0,0.95)) drop-shadow(0 12px 20px rgba(0,0,0,0.85)) drop-shadow(0 0 35px rgba(168,85,247,0.45)) drop-shadow(0 0 65px rgba(0,229,255,0.3))"
-                  }}
-                  className="w-full h-full object-contain transition-transform duration-500 hover:scale-[1.04] hover:-translate-y-1 select-none pointer-events-none"
-                />
-              </div>
-
-              {/* Floating Service Icon 1: Social Media Marketing (Top Left) */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: [0, -10, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.1 }}
-                className="absolute -top-2 -left-2 sm:-left-4 z-20 glass-panel p-2.5 rounded-xl border border-cute-pink/40 bg-dark-900/90 shadow-[0_10px_25px_rgba(244,114,182,0.3)] flex items-center gap-2 backdrop-blur-md"
+                whileHover={{ y: -8, color: "#00E5FF", transition: { duration: 0.15 } }}
+                className="inline-block cursor-pointer select-none"
               >
-                <div className="w-7 h-7 rounded-lg bg-cute-pink/20 border border-cute-pink/40 flex items-center justify-center text-cute-pink shadow-inner">
-                  <FaInstagram className="w-3.5 h-3.5" />
-                </div>
-                <span className="text-xs font-heading font-bold text-white-pure pr-1">
-                  Social Growth
-                </span>
-              </motion.div>
+                {char === " " ? "\u00A0" : char}
+              </motion.span>
+            ))}
+          </span>
 
-              {/* Floating Service Icon 2: Video Editing (Top Right) */}
-              <motion.div
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: [0, 10, 0] }}
-                transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: 0.3 }}
-                className="absolute -top-3 -right-2 sm:-right-4 z-20 glass-panel p-2.5 rounded-xl border border-cyan-neon/40 bg-dark-900/90 shadow-[0_10px_25px_rgba(0,229,255,0.3)] flex items-center gap-2 backdrop-blur-md"
+          {/* Highlight Name with Gradient Falling Letters */}
+          <span className="inline-flex overflow-hidden text-gradient-purple-cyan">
+            {(data.titleName || "Shally").split("").map((char, index) => (
+              <motion.span
+                key={`name-${index}`}
+                initial={{ opacity: 0, y: -100, rotateX: -90, scale: 0.7 }}
+                animate={{ opacity: 1, y: 0, rotateX: 0, scale: 1 }}
+                transition={{
+                  type: "spring",
+                  damping: 10,
+                  stiffness: 130,
+                  delay: 0.3 + index * 0.05
+                }}
+                whileHover={{ y: -10, scale: 1.15, transition: { duration: 0.15 } }}
+                className="inline-block cursor-pointer select-none"
               >
-                <div className="w-7 h-7 rounded-lg bg-cyan-deep/30 border border-cyan-neon/40 flex items-center justify-center text-cyan-neon shadow-inner">
-                  <Film className="w-3.5 h-3.5" />
-                </div>
-                <span className="text-xs font-heading font-bold text-white-pure pr-1">
-                  Video Editing
-                </span>
-              </motion.div>
+                {char === " " ? "\u00A0" : char}
+              </motion.span>
+            ))}
+          </span>
 
-              {/* Floating Service Icon 3: Content Writing (Bottom Left) */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: [0, -8, 0] }}
-                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-                className="absolute -bottom-2 left-2 sm:left-0 z-20 glass-panel p-2.5 rounded-xl border border-purple-glow/40 bg-dark-900/90 shadow-[0_10px_25px_rgba(168,85,247,0.3)] flex items-center gap-2 backdrop-blur-md"
-              >
-                <div className="w-7 h-7 rounded-lg bg-purple-deep/30 border border-purple-glow/40 flex items-center justify-center text-purple-soft shadow-inner">
-                  <PenTool className="w-3.5 h-3.5" />
-                </div>
-                <span className="text-xs font-heading font-bold text-white-pure pr-1">
-                  Editorial Copy
-                </span>
-              </motion.div>
-            </motion.div>
+        </h1>
 
-          </div>
-        </div>
-
-        {/* Hero Impact Metrics Bar */}
+        {/* Cascading Typing / Falling Tagline */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          className="mt-20 pt-10 border-t border-white/10 grid grid-cols-2 md:grid-cols-4 gap-6"
+          transition={{ duration: 0.5, delay: 0.55 }}
+          className="flex flex-wrap items-center justify-center gap-2 sm:gap-4 mb-4 text-xs sm:text-sm font-medium text-white-muted uppercase tracking-wider"
         >
-          <div className="glass-panel p-4 flex flex-col items-center sm:items-start text-center sm:text-left border-l-2 border-l-purple-glow">
-            <span className="font-heading font-black text-2xl sm:text-3xl text-gradient-purple-cyan">
-              {data.stat1Val}
-            </span>
-            <span className="text-xs text-white-muted mt-1 uppercase tracking-wider font-semibold">
-              {data.stat1Label}
-            </span>
+          {/* Tag 1 */}
+          <motion.span
+            initial={{ opacity: 0, y: -25 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ type: "spring", damping: 14, stiffness: 120, delay: 0.6 }}
+            className="text-cyan-neon font-semibold hover:text-white-pure transition-colors cursor-default"
+          >
+            🎬 4K Video Editing
+          </motion.span>
+          
+          <span className="text-white/30">•</span>
+
+          {/* Tag 2 */}
+          <motion.span
+            initial={{ opacity: 0, y: -25 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ type: "spring", damping: 14, stiffness: 120, delay: 0.75 }}
+            className="text-cute-pink font-semibold hover:text-white-pure transition-colors cursor-default"
+          >
+            🌸 Viral Social Growth
+          </motion.span>
+
+          <span className="text-white/30">•</span>
+
+          {/* Tag 3 */}
+          <motion.span
+            initial={{ opacity: 0, y: -25 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ type: "spring", damping: 14, stiffness: 120, delay: 0.9 }}
+            className="text-purple-mist font-semibold hover:text-white-pure transition-colors cursor-default"
+          >
+            ✍️ Cult Copywriting
+          </motion.span>
+        </motion.div>
+
+        {/* ========================================================================= */}
+        {/* 3D ANCIENT SACRED TREE STAGE (ZERO CARDS, PURE ORGANIC 3D ART) */}
+        {/* ========================================================================= */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.92 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.7, delay: 0.2 }}
+          className="w-full my-1 flex items-center justify-center"
+        >
+          <HeroAncientTree 
+            previewImage={data.previewImage}
+            soundState={soundState}
+          />
+        </motion.div>
+
+        {/* Action CTAs */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.3 }}
+          className="flex flex-wrap items-center justify-center gap-4 mt-2"
+        >
+          <MagneticButton
+            href="#work"
+            onClick={() => playSynthSound("click")}
+            variant="primary"
+            className="text-xs sm:text-sm px-8 py-3.5 font-bold tracking-wide shadow-glow-cyan"
+          >
+            <span>Explore Works</span>
+            <ArrowRight className="w-4 h-4 ml-1" />
+          </MagneticButton>
+
+          <MagneticButton
+            href="#contact"
+            onClick={() => playSynthSound("click")}
+            variant="secondary"
+            className="text-xs sm:text-sm px-7 py-3.5 font-bold"
+          >
+            <span>Get In Touch →</span>
+          </MagneticButton>
+        </motion.div>
+
+        {/* Seamless Cardless Stat Ribbon */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.35 }}
+          className="mt-12 flex flex-wrap items-center justify-center gap-6 sm:gap-12 text-xs text-white-muted"
+        >
+          <div className="flex items-baseline gap-1.5">
+            <span className="font-heading font-black text-xl sm:text-2xl text-gradient-purple-cyan">{data.stat1Val}</span>
+            <span className="text-[11px] uppercase tracking-wider font-medium">{data.stat1Label}</span>
           </div>
 
-          <div className="glass-panel p-4 flex flex-col items-center sm:items-start text-center sm:text-left border-l-2 border-l-cyan-neon">
-            <span className="font-heading font-black text-2xl sm:text-3xl text-cyan-neon">
-              {data.stat2Val}
-            </span>
-            <span className="text-xs text-white-muted mt-1 uppercase tracking-wider font-semibold">
-              {data.stat2Label}
-            </span>
+          <span className="text-white/20 hidden sm:inline">•</span>
+
+          <div className="flex items-baseline gap-1.5">
+            <span className="font-heading font-black text-xl sm:text-2xl text-cyan-neon">{data.stat2Val}</span>
+            <span className="text-[11px] uppercase tracking-wider font-medium">{data.stat2Label}</span>
           </div>
 
-          <div className="glass-panel p-4 flex flex-col items-center sm:items-start text-center sm:text-left border-l-2 border-l-cute-pink">
-            <span className="font-heading font-black text-2xl sm:text-3xl text-cute-pink">
-              {data.stat3Val}
-            </span>
-            <span className="text-xs text-white-muted mt-1 uppercase tracking-wider font-semibold">
-              {data.stat3Label}
-            </span>
+          <span className="text-white/20 hidden sm:inline">•</span>
+
+          <div className="flex items-baseline gap-1.5">
+            <span className="font-heading font-black text-xl sm:text-2xl text-cute-pink">{data.stat3Val}</span>
+            <span className="text-[11px] uppercase tracking-wider font-medium">{data.stat3Label}</span>
           </div>
 
-          <div className="glass-panel p-4 flex flex-col items-center sm:items-start text-center sm:text-left border-l-2 border-l-purple-soft">
-            <span className="font-heading font-black text-2xl sm:text-3xl text-white-pure flex items-center gap-1">
-              {data.stat4Val} <CheckCircle2 className="w-5 h-5 text-emerald-400 inline" />
-            </span>
-            <span className="text-xs text-white-muted mt-1 uppercase tracking-wider font-semibold">
-              {data.stat4Label}
-            </span>
+          <span className="text-white/20 hidden sm:inline">•</span>
+
+          <div className="flex items-baseline gap-1.5">
+            <span className="font-heading font-black text-xl sm:text-2xl text-white-pure">{data.stat4Val}</span>
+            <span className="text-[11px] uppercase tracking-wider font-medium">{data.stat4Label}</span>
           </div>
         </motion.div>
 

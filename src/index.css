@@ -13,9 +13,18 @@
     background-color: #06040b;
     color: #f8fafc;
     font-family: 'Plus Jakarta Sans', sans-serif;
+    scroll-behavior: auto !important;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
 
-  /* Custom 5px universal curve styling */
+  body {
+    overflow-x: hidden;
+    background-color: #06040b;
+  }
+
+  /* Custom universal curve styling */
   * {
     border-color: rgba(255, 255, 255, 0.08);
   }
@@ -36,6 +45,45 @@
   }
 }
 
+/* ========================================================================= */
+/* LENIS ULTRA-PERFORMANCE SCROLL ENGINE */
+/* ========================================================================= */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* High-Performance Glassmorphism (Fast Alpha, Zero GPU Stutter) */
+.glass-panel {
+  background: rgba(14, 11, 28, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+}
+
+.glass-panel-hover {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.glass-panel-hover:hover {
+  background: rgba(22, 16, 42, 0.96);
+  border-color: rgba(168, 85, 247, 0.4);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.8), 0 0 20px rgba(168, 85, 247, 0.2);
+}
+
 /* Noise overlay */
 .bg-noise {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.035'/%3E%3C/svg%3E");
@@ -47,24 +95,6 @@
   background-image: 
     linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-}
-
-/* Glassmorphism custom 5px cards */
-.glass-panel {
-  background: rgba(14, 11, 28, 0.7);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 5px;
-}
-
-.glass-panel-hover {
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.glass-panel-hover:hover {
-  background: rgba(22, 16, 42, 0.85);
-  border-color: rgba(168, 85, 247, 0.3);
-  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.8), 0 0 20px rgba(168, 85, 247, 0.15);
 }
 
 /* Gradient Text Utilities */
@@ -86,23 +116,6 @@
   -webkit-text-fill-color: transparent;
 }
 
-/* Lenis smooth scrolling helper */
-html.lenis {
-  height: auto;
-}
-.lenis.lenis-smooth {
-  scroll-behavior: auto !important;
-}
-.lenis.lenis-smooth [data-lenis-prevent] {
-  overscroll-behavior: contain;
-}
-.lenis.lenis-stopped {
-  overflow: hidden;
-}
-.lenis.lenis-scrolling iframe {
-  pointer-events: none;
-}
-
 /* Custom glow borders */
 .glow-border-purple {
   position: relative;
@@ -112,7 +125,7 @@ html.lenis {
   position: absolute;
   inset: -1px;
   background: linear-gradient(135deg, #a855f7, #00e5ff, transparent);
-  border-radius: 6px;
+  border-radius: 8px;
   z-index: -1;
   opacity: 0.4;
   transition: opacity 0.3s ease;

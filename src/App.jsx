@@ -6,6 +6,7 @@ import { Toaster } from "react-hot-toast";
 import { CursorProvider } from "./context/CursorContext";
 import { CustomCursor } from "./components/common/CustomCursor";
 import { NoiseTexture } from "./components/common/NoiseTexture";
+import { ThreeGlobalWorld } from "./components/3d/ThreeGlobalWorld";
 import { FloatingSocialDock } from "./components/common/FloatingSocialDock";
 import { Navbar } from "./components/navigation/Navbar";
 import { HomePage } from "./pages/HomePage";
@@ -44,29 +45,37 @@ function AppContent() {
 
   const isAdminRoute = location.pathname.startsWith("/admin");
 
-  // Lenis Smooth Scroll (Public pages only)
+  // =========================================================================
+  // LUXURY BUTTER-SMOOTH INERTIA SCROLL (Awwwards Grade Lenis)
+  // =========================================================================
   useEffect(() => {
     if (isAdminRoute) return;
 
     const lenis = new Lenis({
-      duration: 0.9,
+      duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: "vertical",
       gestureOrientation: "vertical",
       smoothWheel: true,
-      wheelMultiplier: 0.95,
-      touchMultiplier: 1.5,
+      wheelMultiplier: 1.05,
+      touchMultiplier: 1.8,
+      infinite: false
     });
 
+    // Sync Lenis scroll events
+    window.lenis = lenis;
+
+    let reqId;
     function raf(time) {
       lenis.raf(time);
-      requestAnimationFrame(raf);
+      reqId = requestAnimationFrame(raf);
     }
-    const reqId = requestAnimationFrame(raf);
+    reqId = requestAnimationFrame(raf);
 
     return () => {
       cancelAnimationFrame(reqId);
       lenis.destroy();
+      window.lenis = null;
     };
   }, [isAdminRoute]);
 
@@ -132,6 +141,9 @@ function AppContent() {
 
       {/* Ambient Noise Background */}
       <NoiseTexture />
+
+      {/* Global 3D WebGL Three.js World (Public Pages) */}
+      {!isAdminRoute && <ThreeGlobalWorld />}
 
       {/* Public Navbar & Floating Social Bar (Hidden on Admin Routes) */}
       {!isAdminRoute && (
