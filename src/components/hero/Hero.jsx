@@ -3,14 +3,15 @@ import { motion } from "framer-motion";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { MagneticButton } from "../common/MagneticButton";
 import { HeroAncientTree } from "../3d/HeroAncientTree";
+import { AnimatedCounter } from "../common/AnimatedCounter";
 
 export const Hero = ({ soundState, heroData = {} }) => {
   const { playSynthSound } = soundState || { playSynthSound: () => {} };
 
   // Dynamic CMS Fallback
   const data = {
-    titleGreeting: heroData.titleGreeting || "ENGINEERING",
-    titleName: heroData.titleName || "VIRAL REALITIES",
+    titleGreeting: heroData.titleGreeting || "Hi, I'm",
+    titleName: heroData.titleName || "Shally",
     previewImage: heroData.previewImage || "/shally.png",
     stat1Val: heroData.stat1Val || "18M+",
     stat1Label: heroData.stat1Label || "Organic Views",
@@ -41,7 +42,7 @@ export const Hero = ({ soundState, heroData = {} }) => {
           <span>Ancient Tree of Digital Storytelling</span>
         </motion.div>
 
-        {/* Kinetic Falling Letters Headline (Drop down from top with spring physics) */}
+        {/* Kinetic Falling Letters Headline */}
         <h1 className="font-heading font-black tracking-tight text-4xl sm:text-6xl md:text-7xl lg:text-8xl leading-[1.05] max-w-4xl mb-4 text-white-pure flex flex-wrap items-center justify-center gap-x-3 sm:gap-x-4">
           
           {/* Greeting Word with Falling Letters */}
@@ -172,7 +173,7 @@ export const Hero = ({ soundState, heroData = {} }) => {
           </MagneticButton>
         </motion.div>
 
-        {/* Seamless Cardless Stat Ribbon */}
+        {/* Seamless Cardless Stat Ribbon with Live Animated Counting on Scroll */}
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
@@ -180,28 +181,40 @@ export const Hero = ({ soundState, heroData = {} }) => {
           className="mt-12 flex flex-wrap items-center justify-center gap-6 sm:gap-12 text-xs text-white-muted"
         >
           <div className="flex items-baseline gap-1.5">
-            <span className="font-heading font-black text-xl sm:text-2xl text-gradient-purple-cyan">{data.stat1Val}</span>
+            <AnimatedCounter 
+              value={data.stat1Val} 
+              className="font-heading font-black text-xl sm:text-2xl text-gradient-purple-cyan"
+            />
             <span className="text-[11px] uppercase tracking-wider font-medium">{data.stat1Label}</span>
           </div>
 
           <span className="text-white/20 hidden sm:inline">•</span>
 
           <div className="flex items-baseline gap-1.5">
-            <span className="font-heading font-black text-xl sm:text-2xl text-cyan-neon">{data.stat2Val}</span>
+            <AnimatedCounter 
+              value={data.stat2Val} 
+              className="font-heading font-black text-xl sm:text-2xl text-cyan-neon"
+            />
             <span className="text-[11px] uppercase tracking-wider font-medium">{data.stat2Label}</span>
           </div>
 
           <span className="text-white/20 hidden sm:inline">•</span>
 
           <div className="flex items-baseline gap-1.5">
-            <span className="font-heading font-black text-xl sm:text-2xl text-cute-pink">{data.stat3Val}</span>
+            <AnimatedCounter 
+              value={data.stat3Val} 
+              className="font-heading font-black text-xl sm:text-2xl text-cute-pink"
+            />
             <span className="text-[11px] uppercase tracking-wider font-medium">{data.stat3Label}</span>
           </div>
 
           <span className="text-white/20 hidden sm:inline">•</span>
 
           <div className="flex items-baseline gap-1.5">
-            <span className="font-heading font-black text-xl sm:text-2xl text-white-pure">{data.stat4Val}</span>
+            <AnimatedCounter 
+              value={data.stat4Val} 
+              className="font-heading font-black text-xl sm:text-2xl text-white-pure"
+            />
             <span className="text-[11px] uppercase tracking-wider font-medium">{data.stat4Label}</span>
           </div>
         </motion.div>
