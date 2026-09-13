@@ -96,10 +96,10 @@ export const Services = ({ services, soundState }) => {
         {/* THE 3D SCI-FI BLAST DOOR PORTAL MECHANISM */}
         {/* ========================================================================= */}
         <div 
-          className="relative w-full min-h-[680px] flex items-center justify-center overflow-hidden rounded-[10px] p-2 sm:p-4 border border-white/10 bg-dark-950/60 shadow-[0_20px_70px_rgba(0,0,0,0.9)]"
+          className="relative w-full min-h-[440px] sm:min-h-[680px] flex items-center justify-center overflow-hidden rounded-[10px] p-1.5 sm:p-4 border border-white/10 bg-dark-950/60 shadow-[0_20px_70px_rgba(0,0,0,0.9)]"
           style={{ transformStyle: "preserve-3d" }}
         >
-          {/* Inner Reveal Stage (3 Services Cores inside Vault) */}
+          {/* Inner Reveal Stage (3 Services Cores inside Vault) in 1 Line */}
           <motion.div
             style={{
               scale: coreScale,
@@ -107,7 +107,7 @@ export const Services = ({ services, soundState }) => {
               opacity: coreOpacity,
               transformStyle: "preserve-3d"
             }}
-            className="w-full grid grid-cols-1 lg:grid-cols-3 gap-6 z-10"
+            className="w-full grid grid-cols-3 gap-1.5 sm:gap-6 z-10"
           >
             {services.map((service) => {
               const Icon = iconMap[service.icon] || Sparkles;
@@ -116,8 +116,8 @@ export const Services = ({ services, soundState }) => {
               return (
                 <ThreeDTiltCard
                   key={service.id}
-                  maxTilt={12}
-                  scale={1.02}
+                  maxTilt={10}
+                  scale={1.01}
                   className="h-full"
                 >
                   <div
@@ -126,61 +126,61 @@ export const Services = ({ services, soundState }) => {
                       playSynthSound("hover");
                     }}
                     onMouseLeave={() => setCursor("default")}
-                    className={`glass-panel p-6 sm:p-7 rounded-[8px] border border-white/20 bg-dark-900/95 flex flex-col justify-between relative group transition-all duration-500 overflow-hidden h-full ${accent.hoverBorder} shadow-2xl hover:shadow-[0_25px_60px_rgba(168,85,247,0.3)]`}
+                    className={`glass-panel p-2 sm:p-7 rounded-[6px] sm:rounded-[8px] border border-white/20 bg-dark-900/95 flex flex-col justify-between relative group transition-all duration-500 overflow-hidden h-full ${accent.hoverBorder} shadow-2xl hover:shadow-[0_25px_60px_rgba(168,85,247,0.3)]`}
                   >
                     {/* Background Card Ambient Glow */}
                     <div className={`absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl ${accent.gradient} rounded-full blur-3xl opacity-30 group-hover:opacity-80 transition-opacity pointer-events-none`} />
 
                     <div>
                       {/* Top Bar: Number & Service Icon */}
-                      <div className="flex items-center justify-between mb-6">
-                        <span className="font-mono text-3xl sm:text-4xl font-black text-white/20 group-hover:text-white/50 transition-colors">
+                      <div className="flex items-center justify-between mb-2 sm:mb-6">
+                        <span className="font-mono text-sm sm:text-4xl font-black text-white/20 group-hover:text-white/50 transition-colors">
                           {service.id}
                         </span>
-                        <div className={`w-12 h-12 rounded-[6px] flex items-center justify-center border transition-all duration-300 group-hover:scale-110 shadow-glow-cyan/20 ${accent.badge}`}>
-                          <Icon className="w-6 h-6 stroke-[2.2]" />
+                        <div className={`w-6 h-6 sm:w-12 sm:h-12 rounded-[4px] sm:rounded-[6px] flex items-center justify-center border transition-all duration-300 group-hover:scale-110 shadow-glow-cyan/20 ${accent.badge}`}>
+                          <Icon className="w-3.5 h-3.5 sm:w-6 sm:h-6 stroke-[2.2]" />
                         </div>
                       </div>
 
                       {/* Title & Tagline */}
-                      <h3 className="font-heading font-extrabold text-xl sm:text-2xl text-white-pure mb-1.5 group-hover:text-purple-mist transition-colors">
+                      <h3 className="font-heading font-extrabold text-[10px] sm:text-2xl text-white-pure mb-0.5 sm:mb-1.5 group-hover:text-purple-mist transition-colors line-clamp-1 sm:line-clamp-none">
                         {service.title}
                       </h3>
-                      <p className="text-xs text-cute-pink mb-4 font-semibold tracking-wide">
+                      <p className="text-[7.5px] sm:text-xs text-cute-pink mb-1 sm:mb-4 font-semibold tracking-wide truncate">
                         {service.subtitle}
                       </p>
 
-                      <p className="text-white-dim text-xs sm:text-sm leading-relaxed mb-6 font-normal">
+                      <p className="text-white-dim text-[8px] sm:text-sm leading-snug sm:leading-relaxed mb-1.5 sm:mb-6 font-normal line-clamp-2 sm:line-clamp-none">
                         {service.description}
                       </p>
 
                       {/* Deliverables List */}
-                      <div className="space-y-2.5 mb-6 pt-4 border-t border-white/10">
-                        <span className="text-[11px] uppercase tracking-wider text-purple-mist font-bold block mb-3">
-                          ✦ Key Deliverables & Scope
+                      <div className="space-y-1 sm:space-y-2.5 mb-2 sm:mb-6 pt-1.5 sm:pt-4 border-t border-white/10">
+                        <span className="text-[7.5px] sm:text-[11px] uppercase tracking-wider text-purple-mist font-bold block mb-1 sm:mb-3">
+                          ✦ Deliverables
                         </span>
-                        {service.deliverables.map((del, i) => (
-                          <div key={i} className="flex items-start gap-2.5 text-xs sm:text-[13px] text-white-crisp font-normal leading-snug">
-                            <CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5" style={{ color: accent.accent }} />
-                            <span>{del}</span>
+                        {service.deliverables.slice(0, 3).map((del, i) => (
+                          <div key={i} className="flex items-start gap-1 sm:gap-2.5 text-[7.5px] sm:text-[13px] text-white-crisp font-normal leading-tight line-clamp-1 sm:line-clamp-none">
+                            <CheckCircle2 className="w-2.5 h-2.5 sm:w-4 sm:h-4 shrink-0 mt-0.5" style={{ color: accent.accent }} />
+                            <span className="truncate sm:whitespace-normal">{del}</span>
                           </div>
                         ))}
                       </div>
                     </div>
 
                     {/* Bottom Stat & Action */}
-                    <div className="pt-4 border-t border-white/10 flex items-center justify-between">
-                      <span className="text-xs font-mono text-white-muted font-medium">
+                    <div className="pt-1.5 sm:pt-4 border-t border-white/10 flex items-center justify-between gap-1">
+                      <span className="text-[7px] sm:text-xs font-mono text-white-muted font-medium truncate">
                         {service.stats}
                       </span>
                       <MagneticButton
                         href="#contact"
                         onClick={() => playSynthSound("click")}
                         variant="outline"
-                        className="text-xs px-3.5 py-1.5 font-medium"
+                        className="text-[8px] sm:text-xs px-1.5 py-0.5 sm:px-3.5 sm:py-1.5 font-medium shrink-0"
                       >
                         <span>Inquire</span>
-                        <ArrowRight className="w-3 h-3" />
+                        <ArrowRight className="w-2.5 h-2.5 sm:w-3 sm:h-3 ml-0.5" />
                       </MagneticButton>
                     </div>
                   </div>
