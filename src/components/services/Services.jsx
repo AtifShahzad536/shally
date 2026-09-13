@@ -170,17 +170,17 @@ export const Services = ({ services, soundState }) => {
 
                     {/* Bottom Stat & Action */}
                     <div className="pt-1.5 sm:pt-4 border-t border-white/10 flex items-center justify-between gap-1">
-                      <span className="text-[7px] sm:text-xs font-mono text-white-muted font-medium truncate">
+                      <span className="text-[6.5px] sm:text-xs font-mono text-white-muted font-medium truncate">
                         {service.stats}
                       </span>
                       <MagneticButton
                         href="#contact"
                         onClick={() => playSynthSound("click")}
                         variant="outline"
-                        className="text-[8px] sm:text-xs px-1.5 py-0.5 sm:px-3.5 sm:py-1.5 font-medium shrink-0"
+                        className="text-[6.5px] sm:text-xs px-1 sm:px-3 py-0.5 sm:py-1.5 font-semibold shrink-0 rounded-[3px]"
                       >
                         <span>Inquire</span>
-                        <ArrowRight className="w-2.5 h-2.5 sm:w-3 sm:h-3 ml-0.5" />
+                        <ArrowRight className="w-2 h-2 sm:w-3 sm:h-3 ml-0.5" />
                       </MagneticButton>
                     </div>
                   </div>

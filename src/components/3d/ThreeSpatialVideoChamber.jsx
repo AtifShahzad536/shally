@@ -569,9 +569,9 @@ export const ThreeSpatialVideoChamber = ({
         </div>
 
         {/* ========================================================================= */}
-        {/* 6 3D PRODUCTION CAPABILITY SPECIFICATIONS in 3-COLUMNS */}
+        {/* 6 3D PRODUCTION CAPABILITY SPECIFICATIONS (2 Columns on Mobile, 3 on Desktop) */}
         {/* ========================================================================= */}
-        <div className="mt-20 sm:mt-36 grid grid-cols-3 gap-2 sm:gap-6">
+        <div className="mt-16 sm:mt-36 grid grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-6">
           {[
             {
               title: "3D Kinetic Motion & Captions",
@@ -618,24 +618,24 @@ export const ThreeSpatialVideoChamber = ({
           ].map((pillar, idx) => (
             <div
               key={idx}
-              className="p-2.5 sm:p-6 rounded-[6px] sm:rounded-[8px] bg-dark-900/90 border border-white/15 glass-panel shadow-xl flex flex-col justify-between hover:border-cyan-neon/50 transition-colors"
+              className="p-3 sm:p-6 rounded-[8px] bg-dark-900/90 border border-white/15 glass-panel shadow-lg flex flex-col justify-between hover:border-cyan-neon/50 transition-colors"
             >
               <div>
-                <div className="flex items-center justify-between mb-1.5 sm:mb-3 gap-1">
-                  <span className={`text-[7px] sm:text-[10px] font-mono px-1.5 py-0.5 rounded-[2px] sm:rounded-[3px] border font-bold uppercase truncate ${pillar.color}`}>
+                <div className="flex items-center justify-between mb-2 sm:mb-3 gap-1">
+                  <span className={`text-[7.5px] sm:text-[10px] font-mono px-1.5 py-0.5 rounded-[2px] sm:rounded-[3px] border font-bold uppercase truncate ${pillar.color}`}>
                     {pillar.tag}
                   </span>
-                  <span className="text-cyan-neon font-mono text-[7.5px] sm:text-xs font-bold shrink-0">{pillar.metric}</span>
+                  <span className="text-cyan-neon font-mono text-[8px] sm:text-xs font-bold shrink-0">{pillar.metric}</span>
                 </div>
-                <h3 className="font-heading font-bold text-[10px] sm:text-lg text-white-pure mb-1 sm:mb-2 line-clamp-1 sm:line-clamp-none">
+                <h3 className="font-heading font-bold text-xs sm:text-lg text-white-pure mb-1 sm:mb-2 leading-snug line-clamp-1 sm:line-clamp-none">
                   {pillar.title}
                 </h3>
-                <p className="text-white-dim text-[8px] sm:text-xs leading-tight sm:leading-relaxed font-normal line-clamp-2 sm:line-clamp-none">
+                <p className="text-white-dim text-[8.5px] sm:text-xs leading-relaxed font-normal line-clamp-2 sm:line-clamp-none">
                   {pillar.desc}
                 </p>
               </div>
 
-              <div className="mt-2 sm:mt-5 pt-1.5 sm:pt-3 border-t border-white/10 flex items-center justify-between text-[7.5px] sm:text-xs font-mono text-white-muted">
+              <div className="mt-2.5 sm:mt-5 pt-1.5 sm:pt-3 border-t border-white/10 flex items-center justify-between text-[8px] sm:text-xs font-mono text-white-muted">
                 <span className="hidden sm:inline">PRODUCTION SPEC</span>
                 <span className="text-cyan-neon font-bold">Studio Active →</span>
               </div>
