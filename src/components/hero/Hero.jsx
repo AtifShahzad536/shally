@@ -178,44 +178,44 @@ export const Hero = ({ soundState, heroData = {} }) => {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.35 }}
-          className="mt-12 flex flex-wrap items-center justify-center gap-6 sm:gap-12 text-xs text-white-muted"
+          className="mt-8 sm:mt-12 flex flex-row flex-nowrap items-center justify-center gap-2.5 sm:gap-8 lg:gap-12 text-xs text-white-muted w-full px-2"
         >
-          <div className="flex items-baseline gap-1.5">
+          <div className="flex items-baseline gap-1 sm:gap-1.5">
             <AnimatedCounter 
               value={data.stat1Val} 
-              className="font-heading font-black text-xl sm:text-2xl text-gradient-purple-cyan"
+              className="font-heading font-black text-base sm:text-2xl text-gradient-purple-cyan shrink-0"
             />
-            <span className="text-[11px] uppercase tracking-wider font-medium">{data.stat1Label}</span>
+            <span className="text-[11px] uppercase tracking-wider font-medium hidden sm:inline">{data.stat1Label}</span>
           </div>
 
-          <span className="text-white/20 hidden sm:inline">•</span>
+          <span className="text-white/20 text-xs">•</span>
 
-          <div className="flex items-baseline gap-1.5">
+          <div className="flex items-baseline gap-1 sm:gap-1.5">
             <AnimatedCounter 
               value={data.stat2Val} 
-              className="font-heading font-black text-xl sm:text-2xl text-cyan-neon"
+              className="font-heading font-black text-base sm:text-2xl text-cyan-neon shrink-0"
             />
-            <span className="text-[11px] uppercase tracking-wider font-medium">{data.stat2Label}</span>
+            <span className="text-[11px] uppercase tracking-wider font-medium hidden sm:inline">{data.stat2Label}</span>
           </div>
 
-          <span className="text-white/20 hidden sm:inline">•</span>
+          <span className="text-white/20 text-xs">•</span>
 
-          <div className="flex items-baseline gap-1.5">
+          <div className="flex items-baseline gap-1 sm:gap-1.5">
             <AnimatedCounter 
               value={data.stat3Val} 
-              className="font-heading font-black text-xl sm:text-2xl text-cute-pink"
+              className="font-heading font-black text-base sm:text-2xl text-cute-pink shrink-0"
             />
-            <span className="text-[11px] uppercase tracking-wider font-medium">{data.stat3Label}</span>
+            <span className="text-[11px] uppercase tracking-wider font-medium hidden sm:inline">{data.stat3Label}</span>
           </div>
 
-          <span className="text-white/20 hidden sm:inline">•</span>
+          <span className="text-white/20 text-xs">•</span>
 
-          <div className="flex items-baseline gap-1.5">
+          <div className="flex items-baseline gap-1 sm:gap-1.5">
             <AnimatedCounter 
               value={data.stat4Val} 
-              className="font-heading font-black text-xl sm:text-2xl text-white-pure"
+              className="font-heading font-black text-base sm:text-2xl text-white-pure shrink-0"
             />
-            <span className="text-[11px] uppercase tracking-wider font-medium">{data.stat4Label}</span>
+            <span className="text-[11px] uppercase tracking-wider font-medium hidden sm:inline">{data.stat4Label}</span>
           </div>
         </motion.div>
 
