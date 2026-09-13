@@ -205,6 +205,13 @@ export const ThreeSpatialVideoChamber = ({
     }
   };
 
+  const soundPads = [
+    { id: "sub", name: "808 Sub Drop", sound: "success", freq: "40 Hz" },
+    { id: "whoosh", name: "Whip Whoosh", sound: "cut", freq: "2.4 kHz" },
+    { id: "pop", name: "Dopamine Pop", sound: "click", freq: "8.1 kHz" },
+    { id: "riser", name: "Pitch Riser", sound: "hover", freq: "12 kHz" }
+  ];
+
   const defaultDemoVideo = "https://assets.mixkit.co/videos/preview/mixkit-cyberpunk-woman-in-a-neon-world-43187-large.mp4";
   const activeVideoUrl = (data.videoPreviewUrl && !data.videoPreviewUrl.endsWith(".png") && !data.videoPreviewUrl.endsWith(".jpg") && !data.videoPreviewUrl.endsWith(".jpeg") && !data.videoPreviewUrl.endsWith(".webp"))
     ? data.videoPreviewUrl
