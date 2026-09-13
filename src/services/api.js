@@ -296,9 +296,21 @@ export const compressImageClientSide = (file, maxWidth = 1200, quality = 0.85) =
   });
 };
 
-// Cloudinary File & Video Upload API (with WebP conversion & auto-optimization)
+// Cloudinary File & Video Upload API (with WebP conversion & safe payload handling)
 export const uploadFileToCloudinary = async (file) => {
   try {
+    const isVideo = file.type?.startsWith("video/");
+    
+    // Check file size warning for Vercel serverless limit (4.5 MB)
+    if (file.size > 4.3 * 1024 * 1024) {
+      if (isVideo) {
+        return {
+          success: false,
+          message: "Video file is larger than 4.5MB (Vercel serverless limit). Please use a compressed clip (<4.5MB) or paste the direct video URL in the input field above."
+        };
+      }
+    }
+
     const optimizedFile = await compressImageClientSide(file);
     const formData = new FormData();
     formData.append("file", optimizedFile);
@@ -307,7 +319,25 @@ export const uploadFileToCloudinary = async (file) => {
       method: "POST",
       body: formData
     });
-    return await res.json();
+
+    const resText = await res.text();
+    let json;
+    try {
+      json = JSON.parse(resText);
+    } catch (parseErr) {
+      if (res.status === 413 || resText.includes("Request Entity")) {
+        return {
+          success: false,
+          message: "File exceeds Vercel 4.5MB upload limit. Please paste a direct video URL or use a video under 4.5MB."
+        };
+      }
+      return { 
+        success: false, 
+        message: `Upload server response: ${resText.slice(0, 120)}` 
+      };
+    }
+
+    return json;
   } catch (err) {
     return { success: false, message: err.message || "Upload failed." };
   }

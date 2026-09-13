@@ -187,8 +187,9 @@ export const SiteSettingsManager = () => {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    const isVideo = file.type?.startsWith("video/");
     setUploadingField(pathKey);
-    const toastId = toast.loading(`Uploading to Cloudinary & converting to WebP...`);
+    const toastId = toast.loading(isVideo ? "Uploading video to Cloudinary..." : "Uploading image & converting to WebP...");
     try {
       const res = await uploadFileToCloudinary(file);
       if (res.success && res.data?.url) {
@@ -211,19 +212,19 @@ export const SiteSettingsManager = () => {
         
         setFormData(updated);
 
-        // Auto-save immediately so reload / navigation never loses the image
+        // Auto-save immediately so reload / navigation never loses the asset
         try {
           localStorage.setItem("shally_site_settings", JSON.stringify(updated));
           await updateSettingsApi(updated);
-          toast.success(`Image uploaded & auto-saved to database! ✨`, { id: toastId });
+          toast.success(isVideo ? "Video uploaded & auto-saved to database! ✨" : "Image uploaded & auto-saved to database! ✨", { id: toastId });
         } catch (saveErr) {
-          toast.success(`WebP Uploaded (${(res.data.bytes / 1024).toFixed(1)} KB) - click Save to sync`, { id: toastId });
+          toast.success(`Uploaded (${(res.data.bytes / 1024).toFixed(1)} KB) - click Save to sync`, { id: toastId });
         }
       } else {
-        toast.error(res.message || "Upload failed", { id: toastId });
+        toast.error(res.message || "Upload failed. If file is large, please paste direct video URL.", { id: toastId, duration: 6000 });
       }
     } catch (err) {
-      toast.error("Upload error", { id: toastId });
+      toast.error(err.message || "Upload error", { id: toastId, duration: 6000 });
     } finally {
       setUploadingField(null);
     }
@@ -628,6 +629,14 @@ export const SiteSettingsManager = () => {
                     >
                       ⚡ Reset to Cyberpunk Demo
                     </button>
+                  </div>
+
+                  {/* Size tip banner */}
+                  <div className="p-2.5 rounded bg-purple-deep/20 border border-purple-glow/30 text-[11px] font-mono text-purple-mist flex items-start gap-2">
+                    <Sparkles className="w-3.5 h-3.5 text-cyan-neon shrink-0 mt-0.5" />
+                    <span>
+                      <strong className="text-white-crisp">File Size Notice:</strong> Vercel serverless has a 4.5MB upload limit for direct file transfers. For large 4K video reels, upload to Cloudinary/Dropbox/Streamable/CDN and paste the direct video URL in the box above!
+                    </span>
                   </div>
 
                   {/* Preset Fast Select */}
