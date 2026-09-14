@@ -183,6 +183,11 @@ export const ThreeSpatialVideoChamber = ({
   }, []);
 
   const colorGrades = {
+    cyber: {
+      name: "Cyberpunk 2099",
+      filter: "contrast(125%) saturate(145%) hue-rotate(15deg)",
+      badge: "NEON MATRIX",
+    },
     cyberpunk: {
       name: "Cyberpunk 2099",
       filter: "contrast(125%) saturate(145%) hue-rotate(15deg)",
@@ -202,6 +207,11 @@ export const ThreeSpatialVideoChamber = ({
       name: "35mm Kodak Grain",
       filter: "contrast(105%) saturate(110%) sepia(25%)",
       badge: "KODAK FILM",
+    },
+    raw: {
+      name: "Raw Flat Log (Before)",
+      filter: "contrast(80%) saturate(60%) brightness(105%)",
+      badge: "LOG C S-GAMUT",
     }
   };
 
@@ -327,7 +337,7 @@ export const ThreeSpatialVideoChamber = ({
               </div>
               <div className="flex items-center gap-2 sm:gap-3 shrink-0">
                 <span className="px-1.5 sm:px-2 py-0.5 rounded-[3px] bg-cyan-deep/40 border border-cyan-neon/40 text-cyan-neon text-[8.5px] sm:text-[10px] font-bold">
-                  {colorGrades[activeGrade].badge}
+                  {colorGrades[activeGrade]?.badge || "ACES CC"}
                 </span>
                 <span ref={timecodeRef} className="text-purple-mist font-bold text-[9px] sm:text-xs">
                   00:00:12:18
