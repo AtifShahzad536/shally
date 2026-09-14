@@ -1,14 +1,54 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
+
+// Shared lazy AudioContext singleton to avoid repeated creation and browser gesture warnings
+let sharedAudioCtx = null;
+
+const getAudioContext = () => {
+  if (!sharedAudioCtx) {
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    if (AudioContextClass) {
+      try {
+        sharedAudioCtx = new AudioContextClass();
+      } catch (e) {
+        // Ignored if blocked
+      }
+    }
+  }
+  return sharedAudioCtx;
+};
 
 export const useSoundEffects = () => {
   const [muted, setMuted] = useState(false);
 
+  // Resume audio context on first user interaction
+  useEffect(() => {
+    const unlockAudio = () => {
+      const ctx = getAudioContext();
+      if (ctx && ctx.state === "suspended") {
+        ctx.resume().catch(() => {});
+      }
+      window.removeEventListener("click", unlockAudio);
+      window.removeEventListener("touchstart", unlockAudio);
+      window.removeEventListener("keydown", unlockAudio);
+    };
+
+    window.addEventListener("click", unlockAudio, { passive: true });
+    window.addEventListener("touchstart", unlockAudio, { passive: true });
+    window.addEventListener("keydown", unlockAudio, { passive: true });
+
+    return () => {
+      window.removeEventListener("click", unlockAudio);
+      window.removeEventListener("touchstart", unlockAudio);
+      window.removeEventListener("keydown", unlockAudio);
+    };
+  }, []);
+
   const playSynthSound = useCallback((type = "hover") => {
     if (muted) return;
     try {
-      const AudioContext = window.AudioContext || window.webkitAudioContext;
-      if (!AudioContext) return;
-      const ctx = new AudioContext();
+      const ctx = getAudioContext();
+      if (!ctx || ctx.state !== "running") return;
+
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
 

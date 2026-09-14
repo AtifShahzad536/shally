@@ -51,7 +51,7 @@ export const SiteSettingsManager = () => {
       headlineHighlight: "Hypnotic Edits",
       headlineSuffix: "Frame by Frame",
       description: "Short-form video editing isn't just cutting clips—it's psychological pacing, rhythmic sound design, speed ramps, and retention engineering.",
-      videoPreviewUrl: "https://assets.mixkit.co/videos/preview/mixkit-cyberpunk-woman-in-a-neon-world-43187-large.mp4",
+      videoPreviewUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
       subtitleHookText: "“STOP LOSING 70% OF SCROLLERS IN THE FIRST 3 SECONDS.”",
       trackV2Label: "[3s HOOK TITLE]",
       trackV1Label: "HOOK_CLIP_A.mp4",
@@ -646,12 +646,12 @@ export const SiteSettingsManager = () => {
                         ...formData,
                         videoWorkspace: { 
                           ...formData.videoWorkspace, 
-                          videoPreviewUrl: "https://assets.mixkit.co/videos/preview/mixkit-cyberpunk-woman-in-a-neon-world-43187-large.mp4" 
+                          videoPreviewUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4" 
                         }
                       })}
                       className="px-3 py-2 rounded bg-dark-850 border border-purple-glow/30 text-purple-mist hover:text-white-crisp text-xs font-mono hover:border-purple-glow/60 transition-all"
                     >
-                      ⚡ Reset to Cyberpunk Demo
+                      ⚡ Reset to Sci-Fi Demo
                     </button>
                   </div>
 
@@ -670,10 +670,10 @@ export const SiteSettingsManager = () => {
                     </span>
                     <div className="flex flex-wrap gap-2">
                       {[
-                        { name: "🔮 Cyberpunk Girl", url: "https://assets.mixkit.co/videos/preview/mixkit-cyberpunk-woman-in-a-neon-world-43187-large.mp4" },
-                        { name: "🏙️ Sci-Fi City", url: "https://assets.mixkit.co/videos/preview/mixkit-futuristic-city-with-neon-lights-and-flying-cars-42777-large.mp4" },
-                        { name: "🎬 Editing Suite", url: "https://assets.mixkit.co/videos/preview/mixkit-hands-of-a-video-editor-working-with-software-43407-large.mp4" },
-                        { name: "📊 Motion HUD", url: "https://assets.mixkit.co/videos/preview/mixkit-digital-animation-of-screens-with-charts-31914-large.mp4" }
+                        { name: "🔮 Sci-Fi VFX (4K)", url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4" },
+                        { name: "⚡ High Octane Fire", url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" },
+                        { name: "🎬 Cinematic Motion", url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyBlazes.mp4" },
+                        { name: "🌌 Cyber Hologram", url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4" }
                       ].map((preset, idx) => (
                         <button
                           key={idx}

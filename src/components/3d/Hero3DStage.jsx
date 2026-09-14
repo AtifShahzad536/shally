@@ -107,7 +107,7 @@ export const Hero3DStage = ({ previewImage = "/shally.png", soundState }) => {
     scene.add(particles);
 
     let reqId;
-    const clock = new THREE.Clock();
+    const startTime = performance.now();
     let isVisible = true;
 
     const observer = new IntersectionObserver(([entry]) => {
@@ -119,7 +119,7 @@ export const Hero3DStage = ({ previewImage = "/shally.png", soundState }) => {
       reqId = requestAnimationFrame(animate);
       if (!isVisible) return;
 
-      const t = clock.getElapsedTime();
+      const t = (performance.now() - startTime) * 0.001;
       
       ring1.rotation.z = t * 0.15;
       ring2.rotation.x = t * 0.12;

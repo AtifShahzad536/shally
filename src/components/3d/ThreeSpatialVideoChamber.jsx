@@ -141,20 +141,20 @@ export const ThreeSpatialVideoChamber = ({
     scene.add(ringGroup);
 
     let reqId;
-    let clock = new THREE.Clock();
+    const startTime = performance.now();
     let isVisible = true;
 
     // IntersectionObserver to pause loop when offscreen
     const observer = new IntersectionObserver(([entry]) => {
       isVisible = entry.isIntersecting;
     }, { threshold: 0.1 });
-    observer.observe(sectionRef.current);
+    if (sectionRef.current) observer.observe(sectionRef.current);
 
     const renderLoop = () => {
       reqId = requestAnimationFrame(renderLoop);
       if (!isVisible) return;
 
-      const elapsed = clock.getElapsedTime();
+      const elapsed = (performance.now() - startTime) * 0.001;
       ringGroup.rotation.z = elapsed * 0.1;
       ringGroup.position.z = (elapsed * 3) % 12;
 
@@ -174,8 +174,8 @@ export const ThreeSpatialVideoChamber = ({
 
     return () => {
       cancelAnimationFrame(reqId);
-      observer.disconnect();
       window.removeEventListener("resize", handleResize);
+      observer.disconnect();
       renderer.dispose();
       ringGeometry.dispose();
       ringMaterial.dispose();
@@ -183,20 +183,20 @@ export const ThreeSpatialVideoChamber = ({
   }, []);
 
   const colorGrades = {
-    raw: {
-      name: "Raw Flat Log (Before)",
-      filter: "contrast(80%) saturate(60%) brightness(105%)",
-      badge: "LOG C S-GAMUT",
+    cyberpunk: {
+      name: "Cyberpunk 2099",
+      filter: "contrast(125%) saturate(145%) hue-rotate(15deg)",
+      badge: "NEON MATRIX",
     },
-    cyber: {
-      name: "Luxe Cyberpunk 3D",
-      filter: "contrast(120%) saturate(135%) hue-rotate(330deg)",
-      badge: "DAVINCI 3D LUT",
+    cinematic: {
+      name: "Teal & Orange Blockbuster",
+      filter: "contrast(115%) saturate(125%) sepia(10%) hue-rotate(-10deg)",
+      badge: "ARRI ALEXA 35",
     },
-    "teal-orange": {
-      name: "Hollywood Blockbuster",
-      filter: "contrast(115%) saturate(130%) sepia(18%) hue-rotate(170deg)",
-      badge: "ACES CC GRADE",
+    noir: {
+      name: "High-Contrast Monochrome",
+      filter: "contrast(140%) grayscale(100%) brightness(95%)",
+      badge: "NOIR 4K",
     },
     vintage: {
       name: "35mm Kodak Grain",
@@ -212,10 +212,15 @@ export const ThreeSpatialVideoChamber = ({
     { id: "riser", name: "Pitch Riser", sound: "hover", freq: "12 kHz" }
   ];
 
-  const defaultDemoVideo = "https://assets.mixkit.co/videos/preview/mixkit-cyberpunk-woman-in-a-neon-world-43187-large.mp4";
-  const activeVideoUrl = (data.videoPreviewUrl && !data.videoPreviewUrl.endsWith(".png") && !data.videoPreviewUrl.endsWith(".jpg") && !data.videoPreviewUrl.endsWith(".jpeg") && !data.videoPreviewUrl.endsWith(".webp"))
-    ? data.videoPreviewUrl
-    : defaultDemoVideo;
+  const defaultDemoVideo = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4";
+  const rawUrl = data.videoPreviewUrl;
+  const isMixkitOrInvalid = !rawUrl || rawUrl.includes("mixkit.co") || rawUrl.endsWith(".png") || rawUrl.endsWith(".jpg") || rawUrl.endsWith(".jpeg") || rawUrl.endsWith(".webp");
+  const activeVideoUrl = isMixkitOrInvalid ? defaultDemoVideo : rawUrl;
+
+  const [currentVideoSrc, setCurrentVideoSrc] = useState(activeVideoUrl);
+  useEffect(() => {
+    setCurrentVideoSrc(activeVideoUrl);
+  }, [activeVideoUrl]);
 
   return (
     <section 
@@ -341,15 +346,20 @@ export const ThreeSpatialVideoChamber = ({
               onMouseLeave={() => setCursor?.("default")}
             >
               <video
-                key={activeVideoUrl}
+                key={currentVideoSrc}
                 ref={videoRef}
-                src={activeVideoUrl}
+                src={currentVideoSrc}
                 autoPlay
                 loop
                 muted={isMuted}
                 playsInline
                 preload="auto"
                 crossOrigin="anonymous"
+                onError={() => {
+                  if (currentVideoSrc !== defaultDemoVideo) {
+                    setCurrentVideoSrc(defaultDemoVideo);
+                  }
+                }}
                 onTimeUpdate={handleTimeUpdate}
                 style={{ filter: colorGrades[activeGrade]?.filter || "none" }}
                 className="w-full h-full object-cover transition-all duration-300"

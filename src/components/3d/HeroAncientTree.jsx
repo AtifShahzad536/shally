@@ -112,7 +112,7 @@ export const HeroAncientTree = ({ previewImage = "/shally.png", soundState }) =>
 
     // Animation Loop
     let reqId;
-    const clock = new THREE.Clock();
+    const startTime = performance.now();
     let isVisible = true;
 
     const observer = new IntersectionObserver(([entry]) => {
@@ -124,7 +124,7 @@ export const HeroAncientTree = ({ previewImage = "/shally.png", soundState }) =>
       reqId = requestAnimationFrame(animate);
       if (!isVisible) return;
 
-      const t = clock.getElapsedTime();
+      const t = (performance.now() - startTime) * 0.001;
 
       // Drift petals
       const pArr = petalGeo.attributes.position.array;
